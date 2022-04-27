@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Kanit-Black.ttf</string>
+		<string>Kanit-Bold.ttf</string>
+		<string>Kanit-ExtraBold.ttf</string>
+		<string>Kanit-Medium.ttf</string>
+		<string>Kanit-Regular.ttf</string>
+		<string>Kanit-SemiBold.ttf</string>
+	</array>
+</dict>
+</plist>

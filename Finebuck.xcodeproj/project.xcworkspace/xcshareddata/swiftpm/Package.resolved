@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "HalfModal",
+        "repositoryURL": "https://github.com/Vong3432/HalfModal.git",
+        "state": {
+          "branch": null,
+          "revision": "1880cc5d225b3c998be7f9aeaeb5c8fa390034ef",
+          "version": "1.5.5"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
