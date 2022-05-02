@@ -14,17 +14,13 @@ struct BudgetingDetailView: View {
         case title
     }
     
-    let budgeting: Budgeting?
     
     @EnvironmentObject var appState: AppState
-    
-    @State private var selectedCalculationItem: BudgetItem? = nil
-    @State private var title: String = ""
-    @State private var isEditingTitle = false
+    @StateObject var vm: BudgetingDetailViewModel
     @FocusState private var focusedField: Field?
     
     init(budgeting: Budgeting? = nil) {
-        self.budgeting = budgeting
+        _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting))
     }
     
     var body: some View {
@@ -43,16 +39,18 @@ struct BudgetingDetailView: View {
             }
             
         }
-        .onAppear {
-            title = budgeting?.title ?? "Budgeting"
-        }
+        .onChange(of: focusedField, perform: { newValue in
+            if newValue == nil {
+                vm.endEditingTitle()
+            }
+        })
         .sheet(isPresented: $appState.showActionSheet, detents: [.medium(), .large()], selectedDetentIdentifier: .medium, cornerRadius: 15.0) {
-            BudgetPlanDetailFormView(calculationItem: selectedCalculationItem)
+            BudgetPlanDetailFormView(calculationItem: vm.selectedCalculationItem)
         }
+        
         .toolbar {
             ToolbarItem(placement: .keyboard) {
                 Button("Done") {
-                    isEditingTitle = false
                     focusedField = nil
                 }
             }
@@ -83,22 +81,22 @@ struct BudgetingDetailView_Previews: PreviewProvider {
 extension BudgetingDetailView {
     private var heading: some View {
         HStack {
-            TextField("", text: $title)
+            TextField("", text: $vm.title)
                 .focused($focusedField, equals: .title)
-                .disabled(!isEditingTitle)
+                .disabled(!vm.isEditingTitle)
                 .font(FBFonts.kanitMedium(size: .largeTitle))
             
             Spacer()
             Button {
-                isEditingTitle = true
+                vm.startEditingTitle()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {  /// Anything over 0.1 seems to work
                     focusedField = .title
                 }
             } label: {
                 loadSVG("Edit")
                     .padding(.leading)
-                    .opacity(isEditingTitle ? 0.3 : 1.0)
-                    .animation(.linear, value: isEditingTitle)
+                    .opacity(vm.isEditingTitle ? 0.3 : 1.0)
+                    .animation(.linear, value: vm.isEditingTitle)
             }
         }
     }
@@ -110,12 +108,12 @@ extension BudgetingDetailView {
                 earning
                 net
             }
-            .disabled(isEditingTitle)
-            .opacity(isEditingTitle ? 0.3 : 1.0)
-            .offset(x: 0, y: isEditingTitle ? 10.0: 0.0)
+            .disabled(vm.isEditingTitle)
+            .opacity(vm.isEditingTitle ? 0.3 : 1.0)
+            .offset(x: 0, y: vm.isEditingTitle ? 10.0: 0.0)
             .animation(
                 .spring().delay(0.3),
-                value: isEditingTitle
+                value: vm.isEditingTitle
             )
         }
         .padding(.top)
@@ -125,16 +123,16 @@ extension BudgetingDetailView {
     private var costs: some View {
         VStack(alignment: .leading, spacing: 10) {
             Section {
-                if let costs = budgeting?.costs {
+                if let costs = vm.budgeting?.costs {
                     ForEach(costs) { cost in
                         Button {
                             appState.showActionSheet = true
-                            selectedCalculationItem = cost
+                            vm.viewBudgetItem(cost)
                         } label: {
                             OutlinedItemView(
                                 title: cost.title,
                                 subtitle: cost.type.rawValue,
-                                trailing: cost.formattedCost)
+                                trailing: cost.formattedValue)
                         }
                     }
                 } else {
@@ -153,16 +151,16 @@ extension BudgetingDetailView {
     private var earning: some View {
         VStack(alignment: .leading, spacing: 10) {
             Section {
-                if let earnings = budgeting?.earning {
+                if let earnings = vm.budgeting?.earning {
                     ForEach(earnings) { earning in
                         Button {
                             appState.showActionSheet = true
-                            selectedCalculationItem = earning
+                            vm.viewBudgetItem(earning)
                         } label: {
                             OutlinedItemView(
                                 title: earning.title,
                                 subtitle: earning.type.rawValue,
-                                trailing: earning.formattedCost)
+                                trailing: earning.formattedValue)
                         }
                     }
                 } else {
@@ -180,7 +178,7 @@ extension BudgetingDetailView {
     
     private var net: some View {
         VStack(alignment: .leading, spacing: 10) {
-            if let budgeting = budgeting {
+            if let budgeting = vm.budgeting {
                 Section {
                     OutlinedItemView(
                         title: "Total",
@@ -197,7 +195,7 @@ extension BudgetingDetailView {
     private var addItemBtn: some View {
         VStack {
             Button {
-                selectedCalculationItem = nil
+                vm.viewBudgetItem(nil)
                 appState.showActionSheet = true
             } label: {
                 loadSVG("Plus")
@@ -209,10 +207,10 @@ extension BudgetingDetailView {
             .buttonStyle(.plain)
             .padding()
         }
-        .opacity(isEditingTitle ? 0 : 1)
+        .opacity(vm.isEditingTitle ? 0 : 1)
         .animation(
-            .spring().delay(isEditingTitle ? 0 : 0.5),
-            value: isEditingTitle)
+            .spring().delay(vm.isEditingTitle ? 0 : 0.5),
+            value: vm.isEditingTitle)
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }

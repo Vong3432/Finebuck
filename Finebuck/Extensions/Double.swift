@@ -26,11 +26,11 @@ extension Double {
     /// ```
     /// Convert 1234.56 to "RM1,234.56"
     /// ```
-    func asCurrencyWith2Decimals(currencyCode: String = "MYR", currencySymbol: String = "RM") -> String {
+    func asCurrencyWith2Decimals(currency: Currency) -> String {
         let number = NSNumber(value: self)
         let formatter = currencyFormatter2
-        formatter.currencyCode = currencyCode
-        formatter.currencySymbol = currencySymbol
+        formatter.currencyCode = currency.currencyCode
+        formatter.currencySymbol = currency.currencySymbol
         return formatter.string(from: number) ?? "$0.00"
     }
     
@@ -55,11 +55,11 @@ extension Double {
     /// Convert 12.3456 to "RM12.3456"
     /// Convert 0.123456 to "RM0.123456"
     /// ```
-    func asCurrencyWith6Decimals(currencyCode: String = "MYR", currencySymbol: String = "RM") -> String {
+    func asCurrencyWith6Decimals(currency: Currency) -> String {
         let number = NSNumber(value: self)
         let formatter = currencyFormatter
-        formatter.currencyCode = currencyCode
-        formatter.currencySymbol = currencySymbol
+        formatter.currencyCode = currency.currencyCode
+        formatter.currencySymbol = currency.currencySymbol
         return formatter.string(from: number) ?? "$0.00"
     }
     

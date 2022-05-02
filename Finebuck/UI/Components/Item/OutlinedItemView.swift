@@ -45,7 +45,7 @@ struct OutlinedItemView_Previews: PreviewProvider {
         OutlinedItemView(
             title: mocked.title,
             subtitle: mocked.type.rawValue,
-            trailing: mocked.formattedCost
+            trailing: mocked.formattedValue
         )
             .preferredColorScheme(.dark)
             .previewLayout(.sizeThatFits)

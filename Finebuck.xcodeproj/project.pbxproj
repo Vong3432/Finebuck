@@ -28,6 +28,9 @@
 		3B95A63E281448EC00703DC3 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A63D281448EC00703DC3 /* Double.swift */; };
 		3B95A64028144C4B00703DC3 /* ItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A63F28144C4B00703DC3 /* ItemViewModifier.swift */; };
 		3B95A643281451D600703DC3 /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A642281451D600703DC3 /* TemplateCardView.swift */; };
+		3BA7037A28203F1C00DA0BF8 /* BudgetingDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037928203F1C00DA0BF8 /* BudgetingDetailViewModel.swift */; };
+		3BA7037D2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037C2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift */; };
+		3BA7037F2820489700DA0BF8 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037E2820489700DA0BF8 /* Currency.swift */; };
 		3BBF15012816A34B00C8F447 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF15002816A34B00C8F447 /* String.swift */; };
 		3BD989FB28142F5A00A5BBEC /* FinebuckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD989FA28142F5A00A5BBEC /* FinebuckApp.swift */; };
 		3BD989FD28142F5A00A5BBEC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD989FC28142F5A00A5BBEC /* ContentView.swift */; };
@@ -83,6 +86,9 @@
 		3B95A63D281448EC00703DC3 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		3B95A63F28144C4B00703DC3 /* ItemViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModifier.swift; sourceTree = "<group>"; };
 		3B95A642281451D600703DC3 /* TemplateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardView.swift; sourceTree = "<group>"; };
+		3BA7037928203F1C00DA0BF8 /* BudgetingDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetingDetailViewModel.swift; sourceTree = "<group>"; };
+		3BA7037C2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPlanDetailFormViewModel.swift; sourceTree = "<group>"; };
+		3BA7037E2820489700DA0BF8 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		3BBF15002816A34B00C8F447 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		3BD989F728142F5A00A5BBEC /* Finebuck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Finebuck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BD989FA28142F5A00A5BBEC /* FinebuckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinebuckApp.swift; sourceTree = "<group>"; };
@@ -132,7 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				3B64B67B28147D1800940AEB /* BudgetPlanItemView.swift */,
-				3B6F599228184BF9009F8375 /* BudgetPlanDetailFormView.swift */,
 			);
 			path = BudgetPlan;
 			sourceTree = "<group>";
@@ -140,7 +145,9 @@
 		3B64B67D28147D9000940AEB /* Budgeting */ = {
 			isa = PBXGroup;
 			children = (
+				3BA7037B2820423600DA0BF8 /* Forms */,
 				3B64B67E28147DA600940AEB /* BudgetingDetailView.swift */,
+				3BA7037928203F1C00DA0BF8 /* BudgetingDetailViewModel.swift */,
 			);
 			path = Budgeting;
 			sourceTree = "<group>";
@@ -182,6 +189,15 @@
 				3B95A642281451D600703DC3 /* TemplateCardView.swift */,
 			);
 			path = Templates;
+			sourceTree = "<group>";
+		};
+		3BA7037B2820423600DA0BF8 /* Forms */ = {
+			isa = PBXGroup;
+			children = (
+				3B6F599228184BF9009F8375 /* BudgetPlanDetailFormView.swift */,
+				3BA7037C2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift */,
+			);
+			path = Forms;
 			sourceTree = "<group>";
 		};
 		3BD989EE28142F5A00A5BBEC = {
@@ -294,6 +310,7 @@
 			children = (
 				3B7A810B28145211007D0CB0 /* Template.swift */,
 				3B64B68028147DB700940AEB /* Budgeting.swift */,
+				3BA7037E2820489700DA0BF8 /* Currency.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -522,7 +539,9 @@
 				3B64B67C28147D1800940AEB /* BudgetPlanItemView.swift in Sources */,
 				3B64B67F28147DA600940AEB /* BudgetingDetailView.swift in Sources */,
 				3BD98A2E281432D500A5BBEC /* AppState.swift in Sources */,
+				3BA7037F2820489700DA0BF8 /* Currency.swift in Sources */,
 				3B95A62C281443E900703DC3 /* Color.swift in Sources */,
+				3BA7037A28203F1C00DA0BF8 /* BudgetingDetailViewModel.swift in Sources */,
 				3B95A643281451D600703DC3 /* TemplateCardView.swift in Sources */,
 				3BD989FD28142F5A00A5BBEC /* ContentView.swift in Sources */,
 				3B64B68128147DB700940AEB /* Budgeting.swift in Sources */,
@@ -535,6 +554,7 @@
 				3BD98A3B2814346300A5BBEC /* ModulesView.swift in Sources */,
 				3BD98A372814344400A5BBEC /* HomeView.swift in Sources */,
 				3B95A63E281448EC00703DC3 /* Double.swift in Sources */,
+				3BA7037D2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift in Sources */,
 				3B95A63C2814472100703DC3 /* FBFonts.swift in Sources */,
 				3B6F599328184BF9009F8375 /* BudgetPlanDetailFormView.swift in Sources */,
 			);

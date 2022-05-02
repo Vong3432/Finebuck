@@ -7,7 +7,13 @@
 
 import Foundation
 
-final class AppState: ObservableObject {
+protocol AppStateProtocol {
+    var selectedTab: ContentView.Tab { get set }
+    var showActionSheet: Bool { get set }
+}
+
+final class AppState: ObservableObject, AppStateProtocol {
     @Published var selectedTab: ContentView.Tab = .home
     @Published var showActionSheet: Bool = false
 }
+

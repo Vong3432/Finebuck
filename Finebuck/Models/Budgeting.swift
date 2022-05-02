@@ -12,9 +12,8 @@ protocol BudgetItem {
     var type: Budgeting.CalculateType { get }
     var value: Double { get }
     var rate: Double? { get }
-    var currencySymbol: String { get }
-    var currencyCode: String { get }
-    var formattedCost: String { get }
+    var currency: Currency { get }
+    var formattedValue: String { get }
 }
 
 struct Budgeting: Codable, Identifiable {
@@ -22,8 +21,7 @@ struct Budgeting: Codable, Identifiable {
     let title: String
     let costs: [Cost]
     let earning: [Earning]
-    let currencySymbol: String
-    let currencyCode: String
+    let currency: Currency
     
     struct Cost: Codable, BudgetItem, Identifiable {
         var id = UUID().uuidString
@@ -31,11 +29,10 @@ struct Budgeting: Codable, Identifiable {
         let type: CalculateType
         let value: Double
         let rate: Double?
-        let currencySymbol: String
-        let currencyCode: String
+        let currency: Currency
         
-        var formattedCost: String {
-            return value.asCurrencyWith2Decimals(currencyCode: currencyCode, currencySymbol: currencySymbol)
+        var formattedValue: String {
+            return value.asCurrencyWith2Decimals(currency: currency)
         }
     }
     
@@ -45,11 +42,10 @@ struct Budgeting: Codable, Identifiable {
         let type: CalculateType
         let value: Double
         let rate: Double?
-        let currencySymbol: String
-        let currencyCode: String
+        let currency: Currency
         
-        var formattedCost: String {
-            return value.asCurrencyWith2Decimals(currencyCode: currencyCode, currencySymbol: currencySymbol)
+        var formattedValue: String {
+            return value.asCurrencyWith2Decimals(currency: currency)
         }
     }
     
@@ -66,7 +62,7 @@ struct Budgeting: Codable, Identifiable {
     }
     
     var formattedNet: String {
-        return net.asCurrencyWith2Decimals(currencyCode: currencyCode, currencySymbol: currencySymbol)
+        return net.asCurrencyWith2Decimals(currency: currency)
     }
 }
 
@@ -75,15 +71,12 @@ extension Budgeting {
         Budgeting(
             title: "Budgeting Plan 1",
             costs: [
-                Cost(title: "Cost", type: .fixed, value: 5.0, rate: nil, currencySymbol: "RM",
-                     currencyCode: "MYR")
+                Cost(title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             earning: [
-                Earning(title: "Salary", type: .fixed, value: 5.0, rate: nil, currencySymbol: "RM",
-                        currencyCode: "MYR")
+                Earning(title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
-            currencySymbol: "RM",
-            currencyCode: "MYR"
+            currency: .myr
         )
     ]
 }
