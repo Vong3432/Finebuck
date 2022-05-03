@@ -44,10 +44,12 @@ struct BudgetingDetailView: View {
                 vm.endEditingTitle()
             }
         })
-        .sheet(isPresented: $appState.showActionSheet, detents: [.medium(), .large()], selectedDetentIdentifier: .medium, cornerRadius: 15.0) {
-            BudgetPlanDetailFormView(calculationItem: vm.selectedCalculationItem)
+        .sheet(isPresented: $appState.showActionSheet) {
+            BudgetPlanDetailFormView(calculationItem: vm.selectedCalculationItem, dataService: BudgetsDataService(repository: BudgetsDBRepository()), onDone: closeSheet)
         }
-        
+//        .sheet(isPresented: $appState.showActionSheet, detents: [.medium(), .large()], selectedDetentIdentifier: .medium, cornerRadius: 15.0) {
+//
+//        }
         .toolbar {
             ToolbarItem(placement: .keyboard) {
                 Button("Done") {
@@ -56,6 +58,10 @@ struct BudgetingDetailView: View {
             }
         }
     }
+    
+    private func closeSheet() {
+        appState.showActionSheet = false
+    }
 }
 
 struct BudgetingDetailView_Previews: PreviewProvider {
@@ -63,7 +69,7 @@ struct BudgetingDetailView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
-                BudgetingDetailView()
+                BudgetingDetailView(budgeting: nil)
             }
             .previewDisplayName("Create budgeting")
             

@@ -7,7 +7,8 @@
 
 import Foundation
 
-protocol CurrencyProtocol {
+protocol CurrencyProtocol: Identifiable {
+    var id: String { get }
     var currencyCode: String { get }
     var currencySymbol: String { get }
 }

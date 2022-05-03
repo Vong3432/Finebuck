@@ -7,7 +7,11 @@
 
 import Foundation
 
+enum ItemIdentifier: String, Codable { case cost = "cost", earning = "earning" }
+
 protocol BudgetItem {
+    var id: String { get }
+    var itemIdentifier: ItemIdentifier { get }
     var title: String { get }
     var type: Budgeting.CalculateType { get }
     var value: Double { get }
@@ -25,6 +29,7 @@ struct Budgeting: Codable, Identifiable {
     
     struct Cost: Codable, BudgetItem, Identifiable {
         var id = UUID().uuidString
+        let itemIdentifier: ItemIdentifier
         let title: String
         let type: CalculateType
         let value: Double
@@ -38,6 +43,7 @@ struct Budgeting: Codable, Identifiable {
     
     struct Earning: Codable, BudgetItem, Identifiable {
         var id = UUID().uuidString
+        let itemIdentifier: ItemIdentifier
         let title: String
         let type: CalculateType
         let value: Double
@@ -71,12 +77,22 @@ extension Budgeting {
         Budgeting(
             title: "Budgeting Plan 1",
             costs: [
-                Cost(title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+                Cost(itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             earning: [
-                Earning(title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+                Earning(itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             currency: .myr
+        ),
+        Budgeting(
+            title: "Budgeting Plan 2",
+            costs: [
+                Cost(itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+            ],
+            earning: [
+                Earning(itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .sgd)
+            ],
+            currency: .sgd
         )
     ]
 }

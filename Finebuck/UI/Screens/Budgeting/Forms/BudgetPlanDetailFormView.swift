@@ -13,12 +13,15 @@ struct BudgetPlanDetailFormView: View {
         case amount, label, rate
     }
     
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var appState: AppState
     @StateObject private var vm: BudgetPlanDetailFormViewModel
     @FocusState private var focusedField: Field?
     
-    init(calculationItem: BudgetItem? = nil) {
-        self._vm = StateObject(wrappedValue: BudgetPlanDetailFormViewModel(budgetItem: calculationItem))
+    let onDone: () -> Void?
+    
+    init(calculationItem: BudgetItem? = nil, dataService: BudgetsDataServiceProtocol, onDone: @escaping () -> Void?) {
+        self._vm = StateObject(wrappedValue: BudgetPlanDetailFormViewModel(budgetItem: calculationItem, dataService: dataService))
+        self.onDone = onDone
     }
     
     var body: some View {
@@ -41,7 +44,7 @@ struct BudgetPlanDetailFormView_Previews: PreviewProvider {
     
     static var previews: some View {
         ZStack {
-            BudgetPlanDetailFormView(calculationItem: mocked)
+            BudgetPlanDetailFormView(calculationItem: mocked, dataService: BudgetsDataService(repository: BudgetsDBRepository()), onDone: {})
         }
         .preferredColorScheme(.dark)
     }
@@ -70,27 +73,27 @@ extension BudgetPlanDetailFormView {
         Section {
             HStack {
                 Button {
-                    vm.switchFormType(isCost: true)
+                    vm.switchFormType(to: .cost)
                 } label: {
                     Text("Cost")
                         .padding()
                         .font(FBFonts.kanitSemiBold(size: .headline))
                 }
                 .frame(maxWidth: .infinity)
-                .itemOutlinedStyle(borderColor: vm.isCost ? Color.theme.primary : Color.theme.gray)
+                .itemOutlinedStyle(borderColor: vm.itemIdentifier == .cost ? Color.theme.primary : Color.theme.gray)
                 
                 
                 Spacer()
                 
                 Button {
-                    vm.switchFormType(isCost: false)
+                    vm.switchFormType(to: .earning)
                 } label: {
                     Text("Earning")
                         .padding()
                         .font(FBFonts.kanitSemiBold(size: .headline))
                 }
                 .frame(maxWidth: .infinity)
-                .itemOutlinedStyle(borderColor: !vm.isCost ? Color.theme.primary : Color.theme.gray)
+                .itemOutlinedStyle(borderColor: vm.itemIdentifier == .earning ? Color.theme.primary : Color.theme.gray)
             }
         } header: {
             Text("This is".uppercased())
@@ -215,7 +218,7 @@ extension BudgetPlanDetailFormView {
     
     private var doneBtn: some View {
         Button {
-            dismiss()
+            onDone()
         } label: {
             Text("Done")
                 .font(FBFonts.kanitRegular(size: .body))

@@ -8,6 +8,15 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    @StateObject private var vm: HomeViewModel
+    
+    init() {
+        _vm = StateObject(wrappedValue: HomeViewModel(
+            dataService: BudgetsDataService(repository: BudgetsDBRepository())
+        ))
+    }
+    
     var body: some View {
         ZStack {
             Color.theme.background
@@ -48,7 +57,7 @@ extension HomeView {
             Spacer()
             
             NavigationLink {
-                BudgetingDetailView()
+                BudgetingDetailView(budgeting: nil)
             } label: {
                 createNewBudgetBtn
             }
