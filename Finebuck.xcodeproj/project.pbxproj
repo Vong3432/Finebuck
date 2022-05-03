@@ -39,7 +39,6 @@
 		3BD62A0E28204FDB0094B10F /* CoreDataPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD62A0D28204FDB0094B10F /* CoreDataPublisher.swift */; };
 		3BD62A102820506A0094B10F /* BudgetsDBRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD62A0F2820506A0094B10F /* BudgetsDBRepository.swift */; };
 		3BD62A132820532C0094B10F /* BudgetsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD62A122820532C0094B10F /* BudgetsDataService.swift */; };
-		3BD62A15282056250094B10F /* CRUDDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD62A14282056250094B10F /* CRUDDataService.swift */; };
 		3BD62A1728205BD40094B10F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD62A1628205BD40094B10F /* HomeViewModel.swift */; };
 		3BD989FB28142F5A00A5BBEC /* FinebuckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD989FA28142F5A00A5BBEC /* FinebuckApp.swift */; };
 		3BD989FD28142F5A00A5BBEC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD989FC28142F5A00A5BBEC /* ContentView.swift */; };
@@ -106,7 +105,6 @@
 		3BD62A0D28204FDB0094B10F /* CoreDataPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPublisher.swift; sourceTree = "<group>"; };
 		3BD62A0F2820506A0094B10F /* BudgetsDBRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetsDBRepository.swift; sourceTree = "<group>"; };
 		3BD62A122820532C0094B10F /* BudgetsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetsDataService.swift; sourceTree = "<group>"; };
-		3BD62A14282056250094B10F /* CRUDDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDDataService.swift; sourceTree = "<group>"; };
 		3BD62A1628205BD40094B10F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		3BD989F728142F5A00A5BBEC /* Finebuck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Finebuck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BD989FA28142F5A00A5BBEC /* FinebuckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinebuckApp.swift; sourceTree = "<group>"; };
@@ -238,7 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				3BD62A122820532C0094B10F /* BudgetsDataService.swift */,
-				3BD62A14282056250094B10F /* CRUDDataService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -595,7 +592,6 @@
 				3BA7037F2820489700DA0BF8 /* Currency.swift in Sources */,
 				3B95A62C281443E900703DC3 /* Color.swift in Sources */,
 				3BD62A102820506A0094B10F /* BudgetsDBRepository.swift in Sources */,
-				3BD62A15282056250094B10F /* CRUDDataService.swift in Sources */,
 				3BA7037A28203F1C00DA0BF8 /* BudgetingDetailViewModel.swift in Sources */,
 				3BD62A0E28204FDB0094B10F /* CoreDataPublisher.swift in Sources */,
 				3B95A643281451D600703DC3 /* TemplateCardView.swift in Sources */,
