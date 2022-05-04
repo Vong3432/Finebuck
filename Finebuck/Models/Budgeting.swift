@@ -11,30 +11,36 @@ enum ItemIdentifier: String, Codable { case cost = "cost", earning = "earning" }
 
 protocol BudgetItem {
     var id: String { get }
-    var itemIdentifier: ItemIdentifier { get }
-    var title: String { get }
-    var type: Budgeting.CalculateType { get }
-    var value: Double { get }
-    var rate: Double? { get }
-    var currency: Currency { get }
+    var budgetingID: String? { get set }
+    var itemIdentifier: ItemIdentifier { get set }
+    var title: String { get set }
+    var type: Budgeting.CalculateType { get set}
+    var value: Double { get set}
+    var rate: Double? { get set}
+    var currency: Currency { get set}
     var formattedValue: String { get }
 }
 
-struct Budgeting: Codable, Identifiable {
+struct Budgeting: Codable, Identifiable, Equatable {
+    static func == (lhs: Budgeting, rhs: Budgeting) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     var id = UUID().uuidString
-    let title: String
-    let costs: [Cost]
-    let earning: [Earning]
-    let currency: Currency
+    var title: String
+    var costs: [Cost]
+    var earning: [Earning]
+    var currency: Currency
     
     struct Cost: Codable, BudgetItem, Identifiable {
         var id = UUID().uuidString
-        let itemIdentifier: ItemIdentifier
-        let title: String
-        let type: CalculateType
-        let value: Double
-        let rate: Double?
-        let currency: Currency
+        var budgetingID: String?
+        var itemIdentifier: ItemIdentifier
+        var title: String
+        var type: CalculateType
+        var value: Double
+        var rate: Double?
+        var currency: Currency
         
         var formattedValue: String {
             return value.asCurrencyWith2Decimals(currency: currency)
@@ -43,12 +49,13 @@ struct Budgeting: Codable, Identifiable {
     
     struct Earning: Codable, BudgetItem, Identifiable {
         var id = UUID().uuidString
-        let itemIdentifier: ItemIdentifier
-        let title: String
-        let type: CalculateType
-        let value: Double
-        let rate: Double?
-        let currency: Currency
+        var budgetingID: String?
+        var itemIdentifier: ItemIdentifier
+        var title: String
+        var type: CalculateType
+        var value: Double
+        var rate: Double?
+        var currency: Currency
         
         var formattedValue: String {
             return value.asCurrencyWith2Decimals(currency: currency)
@@ -75,22 +82,24 @@ struct Budgeting: Codable, Identifiable {
 extension Budgeting {
     static let mockBudgetingItems = [
         Budgeting(
+            id: "B1",
             title: "Budgeting Plan 1",
             costs: [
-                Cost(itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+                Cost(budgetingID: "ABC", itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             earning: [
-                Earning(itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+                Earning(budgetingID: "ABC", itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             currency: .myr
         ),
         Budgeting(
+            id: "B2",
             title: "Budgeting Plan 2",
             costs: [
-                Cost(itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+                Cost(budgetingID: "ABCD", itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             earning: [
-                Earning(itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .sgd)
+                Earning(budgetingID: "ABCD", itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .sgd)
             ],
             currency: .sgd
         )

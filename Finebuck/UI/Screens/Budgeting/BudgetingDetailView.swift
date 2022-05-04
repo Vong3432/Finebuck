@@ -14,13 +14,12 @@ struct BudgetingDetailView: View {
         case title
     }
     
-    
     @EnvironmentObject var appState: AppState
     @StateObject var vm: BudgetingDetailViewModel
     @FocusState private var focusedField: Field?
     
-    init(budgeting: Budgeting? = nil) {
-        _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting))
+    init(budgeting: Budgeting?, dataService: BudgetsDBRepository = BudgetsDBRepository()) {
+        _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting, dataService: dataService))
     }
     
     var body: some View {
@@ -45,7 +44,9 @@ struct BudgetingDetailView: View {
             }
         })
         .sheet(isPresented: $appState.showActionSheet) {
-            BudgetPlanDetailFormView(calculationItem: vm.selectedCalculationItem, dataService: BudgetsDataService(repository: BudgetsDBRepository()), onDone: closeSheet)
+            BudgetPlanDetailFormView(
+                calculationItem: vm.selectedCalculationItem,
+                onDone: closeSheet)
         }
 //        .sheet(isPresented: $appState.showActionSheet, detents: [.medium(), .large()], selectedDetentIdentifier: .medium, cornerRadius: 15.0) {
 //
@@ -59,7 +60,9 @@ struct BudgetingDetailView: View {
         }
     }
     
-    private func closeSheet() {
+    private func closeSheet(_ savedBudgetItem: BudgetItem) {
+        vm.saveBudgeting(budgetItem: savedBudgetItem)
+        vm.viewBudgetItem(nil)
         appState.showActionSheet = false
     }
 }
