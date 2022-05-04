@@ -12,9 +12,7 @@ struct HomeView: View {
     @StateObject private var vm: HomeViewModel
     
     init() {
-        _vm = StateObject(wrappedValue: HomeViewModel(
-            dataService: BudgetsDataService(repository: BudgetsDBRepository())
-        ))
+        _vm = StateObject(wrappedValue: HomeViewModel())
     }
     
     var body: some View {

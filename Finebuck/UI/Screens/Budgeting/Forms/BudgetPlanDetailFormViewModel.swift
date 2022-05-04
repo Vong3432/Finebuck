@@ -11,7 +11,6 @@ extension BudgetPlanDetailFormView {
     class BudgetPlanDetailFormViewModel: ObservableObject {
         
         let calculationItem: BudgetItem?
-        private let dataService: BudgetsDataServiceProtocol
         
         // UI
         @Published private(set) var rateFieldOpacity: Double = 0
@@ -37,9 +36,8 @@ extension BudgetPlanDetailFormView {
             return false
         }
         
-        init(budgetItem: BudgetItem?, dataService: BudgetsDataServiceProtocol) {
+        init(budgetItem: BudgetItem?) {
             self.calculationItem = budgetItem
-            self.dataService = dataService
             
             preset()
         }
@@ -74,6 +72,33 @@ extension BudgetPlanDetailFormView {
         /// ** !!! Haven't add to UI !!! **
         func switchCurrencyType(to currency: Currency) {
             self.currency = currency
+        }
+        
+        func save() -> BudgetItem? {
+            var saved: BudgetItem? = nil
+            
+            if itemIdentifier == .cost {
+                saved = Budgeting.Cost(
+                    itemIdentifier: .cost,
+                    title: label,
+                    type: budgetCalculateType,
+                    value: amount!,
+                    rate: rate,
+                    currency: currency)
+            } else {
+                saved = Budgeting.Earning(
+                    itemIdentifier: .earning,
+                    title: label,
+                    type: budgetCalculateType,
+                    value: amount!,
+                    rate: rate,
+                    currency: currency
+                )
+            }
+            
+            guard let saved = saved else { return nil }
+
+            return saved
         }
     }
 }

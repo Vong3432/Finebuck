@@ -17,10 +17,11 @@ struct BudgetPlanDetailFormView: View {
     @StateObject private var vm: BudgetPlanDetailFormViewModel
     @FocusState private var focusedField: Field?
     
-    let onDone: () -> Void?
+    // called by BudgetingDetailView 
+    let onDone: (_ item: BudgetItem) -> Void?
     
-    init(calculationItem: BudgetItem? = nil, dataService: BudgetsDataServiceProtocol, onDone: @escaping () -> Void?) {
-        self._vm = StateObject(wrappedValue: BudgetPlanDetailFormViewModel(budgetItem: calculationItem, dataService: dataService))
+    init(calculationItem: BudgetItem? = nil, onDone: @escaping (_ item: BudgetItem) -> Void?) {
+        self._vm = StateObject(wrappedValue: BudgetPlanDetailFormViewModel(budgetItem: calculationItem))
         self.onDone = onDone
     }
     
@@ -44,7 +45,9 @@ struct BudgetPlanDetailFormView_Previews: PreviewProvider {
     
     static var previews: some View {
         ZStack {
-            BudgetPlanDetailFormView(calculationItem: mocked, dataService: BudgetsDataService(repository: BudgetsDBRepository()), onDone: {})
+            BudgetPlanDetailFormView(
+                calculationItem: mocked,
+                onDone: {_ in })
         }
         .preferredColorScheme(.dark)
     }
@@ -218,7 +221,8 @@ extension BudgetPlanDetailFormView {
     
     private var doneBtn: some View {
         Button {
-            onDone()
+            guard let item = vm.save() else { return }
+            onDone(item)
         } label: {
             Text("Done")
                 .font(FBFonts.kanitRegular(size: .body))

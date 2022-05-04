@@ -9,10 +9,8 @@ import Foundation
 
 extension HomeView {
     class HomeViewModel: ObservableObject {
-        let dataService: BudgetsDataServiceProtocol
-        
-        init(dataService: BudgetsDataServiceProtocol) {
-            self.dataService = dataService
+        init() {
+            
         }
     }
 }
