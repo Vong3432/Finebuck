@@ -11,12 +11,9 @@
 		3B3557D628227E20007CB31E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3557D528227E20007CB31E /* GoogleService-Info.plist */; };
 		3B3557D92822808A007CB31E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3B3557D82822808A007CB31E /* FirebaseAnalytics */; };
 		3B3557DB2822808A007CB31E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3B3557DA2822808A007CB31E /* FirebaseAuth */; };
-		3B3557DD2822808A007CB31E /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3B3557DC2822808A007CB31E /* FirebaseDatabase */; };
-		3B3557E0282280B1007CB31E /* FirebaseDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3557DF282280B1007CB31E /* FirebaseDatabaseManager.swift */; };
 		3B3557E2282280DD007CB31E /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3557E1282280DD007CB31E /* Encodable.swift */; };
-		3B3557E4282280F8007CB31E /* DataSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3557E3282280F8007CB31E /* DataSnapshot.swift */; };
-		3B3557E7282281A7007CB31E /* FirebaseDatabaseSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 3B3557E6282281A7007CB31E /* FirebaseDatabaseSwift-Beta */; };
 		3B3557E928228360007CB31E /* BudgetingDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3557E828228360007CB31E /* BudgetingDetailViewModelTests.swift */; };
+		3B3557EB282290F4007CB31E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3557EA282290F4007CB31E /* AppDelegate.swift */; };
 		3B42607528211BCA00AA7020 /* MockBudgetsDBRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B42607428211BCA00AA7020 /* MockBudgetsDBRepository.swift */; };
 		3B586F31281716FD005D91F5 /* HalfModal in Frameworks */ = {isa = PBXBuildFile; productRef = 3B586F30281716FD005D91F5 /* HalfModal */; };
 		3B64B67C28147D1800940AEB /* BudgetPlanItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B64B67B28147D1800940AEB /* BudgetPlanItemView.swift */; };
@@ -82,10 +79,9 @@
 /* Begin PBXFileReference section */
 		3B2A5C232821A43C006C2C5A /* BudgetsPlanDBRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetsPlanDBRepository.swift; sourceTree = "<group>"; };
 		3B3557D528227E20007CB31E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		3B3557DF282280B1007CB31E /* FirebaseDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseManager.swift; sourceTree = "<group>"; };
 		3B3557E1282280DD007CB31E /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
-		3B3557E3282280F8007CB31E /* DataSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSnapshot.swift; sourceTree = "<group>"; };
 		3B3557E828228360007CB31E /* BudgetingDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetingDetailViewModelTests.swift; sourceTree = "<group>"; };
+		3B3557EA282290F4007CB31E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B42607428211BCA00AA7020 /* MockBudgetsDBRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBudgetsDBRepository.swift; sourceTree = "<group>"; };
 		3B64B67B28147D1800940AEB /* BudgetPlanItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPlanItemView.swift; sourceTree = "<group>"; };
 		3B64B67E28147DA600940AEB /* BudgetingDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetingDetailView.swift; sourceTree = "<group>"; };
@@ -139,10 +135,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B3557E7282281A7007CB31E /* FirebaseDatabaseSwift-Beta in Frameworks */,
 				3B3557D92822808A007CB31E /* FirebaseAnalytics in Frameworks */,
 				3B3557DB2822808A007CB31E /* FirebaseAuth in Frameworks */,
-				3B3557DD2822808A007CB31E /* FirebaseDatabase in Frameworks */,
 				3B586F31281716FD005D91F5 /* HalfModal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,7 +161,6 @@
 		3B3557DE282280A9007CB31E /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
-				3B3557DF282280B1007CB31E /* FirebaseDatabaseManager.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -295,6 +288,7 @@
 				3BD98A2F2814331800A5BBEC /* System */,
 				3BD98A2628142FB500A5BBEC /* UI */,
 				3BD98A2428142FAB00A5BBEC /* Utilities */,
+				3B3557EA282290F4007CB31E /* AppDelegate.swift */,
 				3BD989FA28142F5A00A5BBEC /* FinebuckApp.swift */,
 				3BD989FC28142F5A00A5BBEC /* ContentView.swift */,
 				3BD989FE28142F5B00A5BBEC /* Assets.xcassets */,
@@ -370,7 +364,6 @@
 				3BBF15002816A34B00C8F447 /* String.swift */,
 				3B7B022F28194BD70001CC82 /* UIApplication.swift */,
 				3B3557E1282280DD007CB31E /* Encodable.swift */,
-				3B3557E3282280F8007CB31E /* DataSnapshot.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -482,8 +475,6 @@
 				3B586F30281716FD005D91F5 /* HalfModal */,
 				3B3557D82822808A007CB31E /* FirebaseAnalytics */,
 				3B3557DA2822808A007CB31E /* FirebaseAuth */,
-				3B3557DC2822808A007CB31E /* FirebaseDatabase */,
-				3B3557E6282281A7007CB31E /* FirebaseDatabaseSwift-Beta */,
 			);
 			productName = Finebuck;
 			productReference = 3BD989F728142F5A00A5BBEC /* Finebuck.app */;
@@ -619,15 +610,14 @@
 				3B64B67C28147D1800940AEB /* BudgetPlanItemView.swift in Sources */,
 				3B2A5C242821A43C006C2C5A /* BudgetsPlanDBRepository.swift in Sources */,
 				3B64B67F28147DA600940AEB /* BudgetingDetailView.swift in Sources */,
-				3B3557E0282280B1007CB31E /* FirebaseDatabaseManager.swift in Sources */,
 				3B3557E2282280DD007CB31E /* Encodable.swift in Sources */,
 				3BD98A2E281432D500A5BBEC /* AppState.swift in Sources */,
 				3BA7037F2820489700DA0BF8 /* Currency.swift in Sources */,
-				3B3557E4282280F8007CB31E /* DataSnapshot.swift in Sources */,
 				3B95A62C281443E900703DC3 /* Color.swift in Sources */,
 				3BD62A102820506A0094B10F /* BudgetsDBRepository.swift in Sources */,
 				3BA7037A28203F1C00DA0BF8 /* BudgetingDetailViewModel.swift in Sources */,
 				3BD62A0E28204FDB0094B10F /* CoreDataPublisher.swift in Sources */,
+				3B3557EB282290F4007CB31E /* AppDelegate.swift in Sources */,
 				3B95A643281451D600703DC3 /* TemplateCardView.swift in Sources */,
 				3BD989FD28142F5A00A5BBEC /* ContentView.swift in Sources */,
 				3B64B68128147DB700940AEB /* Budgeting.swift in Sources */,
@@ -821,7 +811,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.vong.Finebuck;
+				PRODUCT_BUNDLE_IDENTIFIER = com.finebuck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -852,7 +842,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.vong.Finebuck;
+				PRODUCT_BUNDLE_IDENTIFIER = com.finebuck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1006,16 +996,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B3557D72822808A007CB31E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
-		};
-		3B3557DC2822808A007CB31E /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3B3557D72822808A007CB31E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
-		};
-		3B3557E6282281A7007CB31E /* FirebaseDatabaseSwift-Beta */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3B3557D72822808A007CB31E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseDatabaseSwift-Beta";
 		};
 		3B586F30281716FD005D91F5 /* HalfModal */ = {
 			isa = XCSwiftPackageProductDependency;

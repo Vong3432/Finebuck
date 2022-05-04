@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct FinebuckApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var appState = AppState()
     
     var body: some Scene {
