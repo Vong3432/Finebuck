@@ -61,27 +61,31 @@ extension BudgetingDetailView {
          }
          
          */
-        func saveBudgeting(budgetItem: BudgetItem?) {
+        func saveBudgeting(budgetItem: BudgetItem?) async {
             let savedBudgeting = Budgeting(
                 title: title,
                 costs: budgeting?.costs ?? [],
                 earning: budgeting?.earning ?? [],
                 currency: budgeting?.currency ?? .myr)
             
-            dataService.save(savedBudgeting) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    self?.error = error
-                    break
-                case .success(let save):
-                    self?.budgeting = save
-                    self?.saveBudgetItem(of: save, budgetItem: budgetItem)
-                    break
-                }
+            do {
+                let saved = try await dataService.save(savedBudgeting)
+                await saveBudgetItem(of: saved, budgetItem: budgetItem)
+            }
+            catch BudgetsDBRepositoryError.noResult {
+                self.error = .noResult
+            }
+            catch BudgetsDBRepositoryError.notAuthenticated {
+                self.error = .notAuthenticated
+            }
+            catch BudgetsDBRepositoryError.failed {
+                self.error = .failed
+            } catch {
+                fatalError("Unexpected error")
             }
         }
         
-        private func saveBudgetItem(of budgeting: Budgeting, budgetItem: BudgetItem?) {
+        private func saveBudgetItem(of budgeting: Budgeting, budgetItem: BudgetItem?) async {
             guard let budgetItem = budgetItem else { return }
             
             var updatedBudgeting = Budgeting(id: budgeting.id, title: budgeting.title, costs: budgeting.costs, earning: budgeting.earning, currency: budgeting.currency)
@@ -116,15 +120,22 @@ extension BudgetingDetailView {
             }
             
             // Updates to server
-            dataService.update(budgeting, with: updatedBudgeting) { [weak self] result in
-                switch result {
-                case .failure(let err):
-                    self?.error = err
-                case .success(let save):
-                    self?.budgeting = save
-                }
+            do {
+                let savedBudgeting = try await dataService.update(budgeting, with: updatedBudgeting)
+                self.budgeting = savedBudgeting
             }
-            
+            catch BudgetsDBRepositoryError.noResult {
+                self.error = .noResult
+            }
+            catch BudgetsDBRepositoryError.notAuthenticated {
+                self.error = .notAuthenticated
+            }
+            catch BudgetsDBRepositoryError.failed {
+                self.error = .failed
+            }
+            catch {
+                fatalError("Unexpected error")
+            }
         }
     }
 }

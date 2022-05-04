@@ -24,6 +24,9 @@
 		3B7A810C28145211007D0CB0 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A810B28145211007D0CB0 /* Template.swift */; };
 		3B7B022E281939000001CC82 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B022D281939000001CC82 /* CustomTextField.swift */; };
 		3B7B023028194BD70001CC82 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7B022F28194BD70001CC82 /* UIApplication.swift */; };
+		3B93417D2822DC6400FBFB62 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B93417C2822DC6400FBFB62 /* FirebaseFirestore */; };
+		3B93417F2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 3B93417E2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community */; };
+		3B9341812822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9341802822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta */; };
 		3B95A62A2814424700703DC3 /* TintViewModifer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A6292814424700703DC3 /* TintViewModifer.swift */; };
 		3B95A62C281443E900703DC3 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A62B281443E900703DC3 /* Color.swift */; };
 		3B95A6342814466A00703DC3 /* Kanit-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B95A62E2814466A00703DC3 /* Kanit-Black.ttf */; };
@@ -136,7 +139,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B3557D92822808A007CB31E /* FirebaseAnalytics in Frameworks */,
+				3B93417D2822DC6400FBFB62 /* FirebaseFirestore in Frameworks */,
 				3B3557DB2822808A007CB31E /* FirebaseAuth in Frameworks */,
+				3B9341812822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta in Frameworks */,
+				3B93417F2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				3B586F31281716FD005D91F5 /* HalfModal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -158,13 +164,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3B3557DE282280A9007CB31E /* Firebase */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Firebase;
-			sourceTree = "<group>";
-		};
 		3B3557E5282281A7007CB31E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,7 +326,6 @@
 		3BD98A2428142FAB00A5BBEC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				3B3557DE282280A9007CB31E /* Firebase */,
 				3BD62A0C28204FD10094B10F /* CoreData */,
 				3BD62A0928204FBB0094B10F /* Networking */,
 			);
@@ -475,6 +473,9 @@
 				3B586F30281716FD005D91F5 /* HalfModal */,
 				3B3557D82822808A007CB31E /* FirebaseAnalytics */,
 				3B3557DA2822808A007CB31E /* FirebaseAuth */,
+				3B93417C2822DC6400FBFB62 /* FirebaseFirestore */,
+				3B93417E2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community */,
+				3B9341802822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta */,
 			);
 			productName = Finebuck;
 			productReference = 3BD989F728142F5A00A5BBEC /* Finebuck.app */;
@@ -1001,6 +1002,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B586F2F281716FD005D91F5 /* XCRemoteSwiftPackageReference "HalfModal" */;
 			productName = HalfModal;
+		};
+		3B93417C2822DC6400FBFB62 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B3557D72822808A007CB31E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		3B93417E2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B3557D72822808A007CB31E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
+		3B9341802822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B3557D72822808A007CB31E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreSwift-Beta";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

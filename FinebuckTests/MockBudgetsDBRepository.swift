@@ -10,47 +10,49 @@ import Combine
 @testable import Finebuck
 
 final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
-    func getAll(completion: @escaping (Result<[Budgeting], BudgetsDBRepositoryError>) -> Void) {
-        completion(.failure(.failed))
+    func save(_ budgeting: Budgeting) async throws -> Budgeting {
+        throw BudgetsDBRepositoryError.failed
     }
     
-    func save(_ budgeting: Budgeting, completion: @escaping (Result<Budgeting, BudgetsDBRepositoryError>) -> Void) {
-        completion(.failure(.failed))
+    func update(_ targetBudgeting: Budgeting, with: Budgeting) async throws -> Budgeting {
+        throw BudgetsDBRepositoryError.failed
     }
     
-    func update(_ targetBudgeting: Budgeting, with: Budgeting, completion: @escaping (Result<Budgeting, BudgetsDBRepositoryError>) -> Void) {
-        completion(.failure(.noResult))
+    func delete(targetBudgeting: Budgeting) async throws {
+        throw BudgetsDBRepositoryError.failed
     }
     
-    func delete(targetBudgeting: Budgeting, completion: @escaping (Result<Void, BudgetsDBRepositoryError>) -> Void) {
-        completion(.failure(.failed))
+    func get(_ budgeting: Budgeting) async throws -> Budgeting? {
+        throw BudgetsDBRepositoryError.noResult
     }
     
-    func get(_ budgeting: Budgeting, completion: @escaping (Result<Budgeting?, BudgetsDBRepositoryError>) -> Void) {
-        completion(.failure(.noResult))
+    func getAll() async throws -> [Budgeting] {
+        throw BudgetsDBRepositoryError.noResult
     }
+    
+    
 }
 
 final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
-    func getAll(completion: @escaping (Result<[Budgeting], BudgetsDBRepositoryError>) -> Void) {
+    func save(_ budgeting: Budgeting) async throws -> Budgeting {
+        return budgeting
+    }
+    
+    func update(_ targetBudgeting: Budgeting, with: Budgeting) async throws -> Budgeting {
+        return with
+    }
+    
+    func delete(targetBudgeting: Budgeting) async throws {
+        return
+    }
+    
+    func get(_ budgeting: Budgeting) async throws -> Budgeting? {
+        return budgeting
+    }
+    
+    func getAll() async throws -> [Budgeting] {
         let mocked = Budgeting.mockBudgetingItems
-        completion(.success(mocked))
-    }
-    
-    func save(_ budgeting: Budgeting, completion: @escaping (Result<Budgeting, BudgetsDBRepositoryError>) -> Void) {
-        completion(.success(budgeting))
-    }
-    
-    func update(_ targetBudgeting: Budgeting, with: Budgeting, completion: @escaping (Result<Budgeting, BudgetsDBRepositoryError>) -> Void) {
-        completion(.success(with))
-    }
-    
-    func delete(targetBudgeting: Budgeting, completion: @escaping (Result<Void, BudgetsDBRepositoryError>) -> Void) {
-        completion(.success(Void()))
-    }
-    
-    func get(_ budgeting: Budgeting, completion: @escaping (Result<Budgeting?, BudgetsDBRepositoryError>) -> Void) {
-        completion(.success(budgeting))
+        return mocked
     }
     
 }

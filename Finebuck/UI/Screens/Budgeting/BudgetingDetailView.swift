@@ -61,8 +61,10 @@ struct BudgetingDetailView: View {
     }
     
     private func closeSheet(_ savedBudgetItem: BudgetItem) {
-        vm.saveBudgeting(budgetItem: savedBudgetItem)
-        vm.viewBudgetItem(nil)
+        Task {
+            await vm.saveBudgeting(budgetItem: savedBudgetItem)
+            vm.viewBudgetItem(nil)
+        }
         appState.showActionSheet = false
     }
 }
