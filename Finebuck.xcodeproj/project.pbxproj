@@ -14,7 +14,6 @@
 		3B3557E2282280DD007CB31E /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3557E1282280DD007CB31E /* Encodable.swift */; };
 		3B3557E928228360007CB31E /* BudgetingDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3557E828228360007CB31E /* BudgetingDetailViewModelTests.swift */; };
 		3B3557EB282290F4007CB31E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3557EA282290F4007CB31E /* AppDelegate.swift */; };
-		3B42607528211BCA00AA7020 /* MockBudgetsDBRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B42607428211BCA00AA7020 /* MockBudgetsDBRepository.swift */; };
 		3B586F31281716FD005D91F5 /* HalfModal in Frameworks */ = {isa = PBXBuildFile; productRef = 3B586F30281716FD005D91F5 /* HalfModal */; };
 		3B64B67C28147D1800940AEB /* BudgetPlanItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B64B67B28147D1800940AEB /* BudgetPlanItemView.swift */; };
 		3B64B67F28147DA600940AEB /* BudgetingDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B64B67E28147DA600940AEB /* BudgetingDetailView.swift */; };
@@ -27,6 +26,7 @@
 		3B93417D2822DC6400FBFB62 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B93417C2822DC6400FBFB62 /* FirebaseFirestore */; };
 		3B93417F2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 3B93417E2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community */; };
 		3B9341812822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9341802822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta */; };
+		3B9341842823014700FBFB62 /* CloseBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9341832823014700FBFB62 /* CloseBarItem.swift */; };
 		3B95A62A2814424700703DC3 /* TintViewModifer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A6292814424700703DC3 /* TintViewModifer.swift */; };
 		3B95A62C281443E900703DC3 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A62B281443E900703DC3 /* Color.swift */; };
 		3B95A6342814466A00703DC3 /* Kanit-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B95A62E2814466A00703DC3 /* Kanit-Black.ttf */; };
@@ -42,6 +42,9 @@
 		3BA7037A28203F1C00DA0BF8 /* BudgetingDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037928203F1C00DA0BF8 /* BudgetingDetailViewModel.swift */; };
 		3BA7037D2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037C2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift */; };
 		3BA7037F2820489700DA0BF8 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037E2820489700DA0BF8 /* Currency.swift */; };
+		3BBCAEE02823C80C0039F5CB /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 3BBCAEDF2823C80C0039F5CB /* Resolver */; };
+		3BBCAEE22823C8980039F5CB /* AppDelegate+Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBCAEE12823C8980039F5CB /* AppDelegate+Injection.swift */; };
+		3BBCAEEC2823DCEC0039F5CB /* MockBudgetsDBRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBCAEEB2823DCEC0039F5CB /* MockBudgetsDBRepository.swift */; };
 		3BBF15012816A34B00C8F447 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF15002816A34B00C8F447 /* String.swift */; };
 		3BD62A0B28204FC90094B10F /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD62A0A28204FC90094B10F /* NetworkingManager.swift */; };
 		3BD62A0E28204FDB0094B10F /* CoreDataPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD62A0D28204FDB0094B10F /* CoreDataPublisher.swift */; };
@@ -85,7 +88,6 @@
 		3B3557E1282280DD007CB31E /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 		3B3557E828228360007CB31E /* BudgetingDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetingDetailViewModelTests.swift; sourceTree = "<group>"; };
 		3B3557EA282290F4007CB31E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3B42607428211BCA00AA7020 /* MockBudgetsDBRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBudgetsDBRepository.swift; sourceTree = "<group>"; };
 		3B64B67B28147D1800940AEB /* BudgetPlanItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPlanItemView.swift; sourceTree = "<group>"; };
 		3B64B67E28147DA600940AEB /* BudgetingDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetingDetailView.swift; sourceTree = "<group>"; };
 		3B64B68028147DB700940AEB /* Budgeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budgeting.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		3B7A810B28145211007D0CB0 /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
 		3B7B022D281939000001CC82 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		3B7B022F28194BD70001CC82 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		3B9341832823014700FBFB62 /* CloseBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseBarItem.swift; sourceTree = "<group>"; };
 		3B95A6292814424700703DC3 /* TintViewModifer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintViewModifer.swift; sourceTree = "<group>"; };
 		3B95A62B281443E900703DC3 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		3B95A62E2814466A00703DC3 /* Kanit-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-Black.ttf"; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 		3BA7037928203F1C00DA0BF8 /* BudgetingDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetingDetailViewModel.swift; sourceTree = "<group>"; };
 		3BA7037C2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPlanDetailFormViewModel.swift; sourceTree = "<group>"; };
 		3BA7037E2820489700DA0BF8 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		3BBCAEE12823C8980039F5CB /* AppDelegate+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Injection.swift"; sourceTree = "<group>"; };
+		3BBCAEEB2823DCEC0039F5CB /* MockBudgetsDBRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBudgetsDBRepository.swift; sourceTree = "<group>"; };
 		3BBF15002816A34B00C8F447 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		3BD62A0A28204FC90094B10F /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		3BD62A0D28204FDB0094B10F /* CoreDataPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPublisher.swift; sourceTree = "<group>"; };
@@ -143,6 +148,7 @@
 				3B3557DB2822808A007CB31E /* FirebaseAuth in Frameworks */,
 				3B9341812822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta in Frameworks */,
 				3B93417F2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community in Frameworks */,
+				3BBCAEE02823C80C0039F5CB /* Resolver in Frameworks */,
 				3B586F31281716FD005D91F5 /* HalfModal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,6 +203,14 @@
 			path = TextField;
 			sourceTree = "<group>";
 		};
+		3B9341822823013900FBFB62 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				3B9341832823014700FBFB62 /* CloseBarItem.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
 		3B95A6282814423D00703DC3 /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,6 +249,14 @@
 				3BA7037C2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift */,
 			);
 			path = Forms;
+			sourceTree = "<group>";
+		};
+		3BBCAEEA2823DCAB0039F5CB /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				3BBCAEEB2823DCEC0039F5CB /* MockBudgetsDBRepository.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		3BD62A0928204FBB0094B10F /* Networking */ = {
@@ -308,7 +330,6 @@
 			isa = PBXGroup;
 			children = (
 				3BD98A0B28142F5B00A5BBEC /* FinebuckTests.swift */,
-				3B42607428211BCA00AA7020 /* MockBudgetsDBRepository.swift */,
 				3B3557E828228360007CB31E /* BudgetingDetailViewModelTests.swift */,
 			);
 			path = FinebuckTests;
@@ -345,6 +366,7 @@
 		3BD98A2728142FB800A5BBEC /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3B9341822823013900FBFB62 /* Button */,
 				3B7B022C281938F10001CC82 /* TextField */,
 				3BE9196D2816A642001206D8 /* Item */,
 				3B64B67A28147D0B00940AEB /* BudgetPlan */,
@@ -391,6 +413,7 @@
 		3BD98A2B2814326400A5BBEC /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				3BBCAEEA2823DCAB0039F5CB /* Mocks */,
 				3BD62A0F2820506A0094B10F /* BudgetsDBRepository.swift */,
 				3B2A5C232821A43C006C2C5A /* BudgetsPlanDBRepository.swift */,
 			);
@@ -400,6 +423,7 @@
 		3BD98A2C281432CC00A5BBEC /* Injected */ = {
 			isa = PBXGroup;
 			children = (
+				3BBCAEE12823C8980039F5CB /* AppDelegate+Injection.swift */,
 				3BD98A2D281432D500A5BBEC /* AppState.swift */,
 			);
 			path = Injected;
@@ -476,6 +500,7 @@
 				3B93417C2822DC6400FBFB62 /* FirebaseFirestore */,
 				3B93417E2822DC6400FBFB62 /* FirebaseFirestoreCombine-Community */,
 				3B9341802822DC6400FBFB62 /* FirebaseFirestoreSwift-Beta */,
+				3BBCAEDF2823C80C0039F5CB /* Resolver */,
 			);
 			productName = Finebuck;
 			productReference = 3BD989F728142F5A00A5BBEC /* Finebuck.app */;
@@ -552,6 +577,7 @@
 			packageReferences = (
 				3B586F2F281716FD005D91F5 /* XCRemoteSwiftPackageReference "HalfModal" */,
 				3B3557D72822808A007CB31E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				3BBCAEDE2823C80C0039F5CB /* XCRemoteSwiftPackageReference "Resolver" */,
 			);
 			productRefGroup = 3BD989F828142F5A00A5BBEC /* Products */;
 			projectDirPath = "";
@@ -626,7 +652,10 @@
 				3B7B022E281939000001CC82 /* CustomTextField.swift in Sources */,
 				3B95A62A2814424700703DC3 /* TintViewModifer.swift in Sources */,
 				3B95A64028144C4B00703DC3 /* ItemViewModifier.swift in Sources */,
+				3BBCAEEC2823DCEC0039F5CB /* MockBudgetsDBRepository.swift in Sources */,
+				3BBCAEE22823C8980039F5CB /* AppDelegate+Injection.swift in Sources */,
 				3BD98A392814345800A5BBEC /* TemplatesView.swift in Sources */,
+				3B9341842823014700FBFB62 /* CloseBarItem.swift in Sources */,
 				3BD989FB28142F5A00A5BBEC /* FinebuckApp.swift in Sources */,
 				3BD98A3B2814346300A5BBEC /* ModulesView.swift in Sources */,
 				3BD98A372814344400A5BBEC /* HomeView.swift in Sources */,
@@ -644,7 +673,6 @@
 			files = (
 				3B3557E928228360007CB31E /* BudgetingDetailViewModelTests.swift in Sources */,
 				3BD98A0C28142F5B00A5BBEC /* FinebuckTests.swift in Sources */,
-				3B42607528211BCA00AA7020 /* MockBudgetsDBRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -985,6 +1013,14 @@
 				version = 1.5.5;
 			};
 		};
+		3BBCAEDE2823C80C0039F5CB /* XCRemoteSwiftPackageReference "Resolver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Resolver.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1017,6 +1053,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B3557D72822808A007CB31E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseFirestoreSwift-Beta";
+		};
+		3BBCAEDF2823C80C0039F5CB /* Resolver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3BBCAEDE2823C80C0039F5CB /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = Resolver;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
