@@ -17,6 +17,17 @@ struct Currency: CurrencyProtocol, Identifiable, Codable {
     var id = UUID().uuidString
     let currencyCode: String
     let currencySymbol: String
+    
+    var flag: String {
+        switch currencyCode {
+        case "MYR":
+            return "🇲🇾"
+        case "SGD":
+            return "🇸🇬"
+        default:
+            return "$"
+        }
+    }
 }
 
 // simple way

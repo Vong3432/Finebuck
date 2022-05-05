@@ -43,7 +43,14 @@ struct Budgeting: Codable, Identifiable, Equatable {
         var currency: Currency
         
         var formattedValue: String {
-            return value.asCurrencyWith2Decimals(currency: currency)
+            if type == .fixed {
+                return value.asCurrencyWith2Decimals(currency: currency)
+            }
+            else {
+                guard let rate = rate else { fatalError() }
+                let after = value * (100 - (rate * 100)) / 100
+                return after.asCurrencyWith2Decimals(currency: currency)
+            }
         }
     }
     
@@ -58,7 +65,14 @@ struct Budgeting: Codable, Identifiable, Equatable {
         var currency: Currency
         
         var formattedValue: String {
-            return value.asCurrencyWith2Decimals(currency: currency)
+            if type == .fixed {
+                return value.asCurrencyWith2Decimals(currency: currency)
+            }
+            else {
+                guard let rate = rate else { fatalError() }
+                let after = value * (100 - (rate * 100)) / 100
+                return after.asCurrencyWith2Decimals(currency: currency)
+            }
         }
     }
     
