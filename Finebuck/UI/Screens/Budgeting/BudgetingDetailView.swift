@@ -7,6 +7,7 @@
 
 import SwiftUI
 import HalfModal
+import Resolver
 
 
 struct BudgetingDetailView: View {
@@ -14,12 +15,13 @@ struct BudgetingDetailView: View {
         case title
     }
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var appState: AppState
     @StateObject var vm: BudgetingDetailViewModel
     @FocusState private var focusedField: Field?
     
     init(budgeting: Budgeting?, dataService: BudgetsDBRepository = BudgetsDBRepository()) {
-        _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting, dataService: dataService))
+        _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting))
     }
     
     var body: some View {
@@ -48,16 +50,14 @@ struct BudgetingDetailView: View {
                 calculationItem: vm.selectedCalculationItem,
                 onDone: closeSheet)
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                CloseBarItem(dismiss: .constant(dismiss), text: "Save")
+            }
+        }
 //        .sheet(isPresented: $appState.showActionSheet, detents: [.medium(), .large()], selectedDetentIdentifier: .medium, cornerRadius: 15.0) {
 //
 //        }
-        .toolbar {
-            ToolbarItem(placement: .keyboard) {
-                Button("Done") {
-                    focusedField = nil
-                }
-            }
-        }
     }
     
     private func closeSheet(_ savedBudgetItem: BudgetItem) {
@@ -67,12 +67,23 @@ struct BudgetingDetailView: View {
         }
         appState.showActionSheet = false
     }
+    
+    private func generateBudgetItemSubtitle(_ budget: BudgetItem) -> String {
+        
+        if budget.type == .fixed {
+            return budget.type.rawValue
+        } else {
+            return "\(budget.type.rawValue) \(budget.rate?.asPercentString() ?? "0%")"
+        }
+    }
 }
 
 struct BudgetingDetailView_Previews: PreviewProvider {
     
     static var previews: some View {
-        Group {
+        Resolver.registerMockServices()
+        
+        return Group {
             NavigationView {
                 BudgetingDetailView(budgeting: nil)
             }
@@ -142,7 +153,7 @@ extension BudgetingDetailView {
                         } label: {
                             OutlinedItemView(
                                 title: cost.title,
-                                subtitle: cost.type.rawValue,
+                                subtitle: generateBudgetItemSubtitle(cost),
                                 trailing: cost.formattedValue)
                         }
                     }
@@ -170,7 +181,7 @@ extension BudgetingDetailView {
                         } label: {
                             OutlinedItemView(
                                 title: earning.title,
-                                subtitle: earning.type.rawValue,
+                                subtitle: generateBudgetItemSubtitle(earning),
                                 trailing: earning.formattedValue)
                         }
                     }

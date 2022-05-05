@@ -51,6 +51,8 @@ extension BudgetPlanDetailFormView {
             itemIdentifier = calculationItem.itemIdentifier
             budgetCalculateType = calculationItem.type
             currency = calculationItem.currency
+            
+            switchCalculateType(to: budgetCalculateType)
         }
         
         func switchCalculateType(to calculateType: Budgeting.CalculateType) {
@@ -79,6 +81,7 @@ extension BudgetPlanDetailFormView {
             
             if itemIdentifier == .cost {
                 saved = Budgeting.Cost(
+                    id: calculationItem?.id ?? UUID().uuidString,
                     itemIdentifier: .cost,
                     title: label,
                     type: budgetCalculateType,
@@ -87,6 +90,7 @@ extension BudgetPlanDetailFormView {
                     currency: currency)
             } else {
                 saved = Budgeting.Earning(
+                    id: calculationItem?.id ?? UUID().uuidString,
                     itemIdentifier: .earning,
                     title: label,
                     type: budgetCalculateType,

@@ -1,15 +1,18 @@
 //
 //  MockBudgetsDBRepository.swift
-//  FinebuckTests
+//  Finebuck
 //
-//  Created by Vong Nyuksoon on 03/05/2022.
+//  Created by Vong Nyuksoon on 05/05/2022.
 //
 
 import Foundation
 import Combine
-@testable import Finebuck
 
 final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
+    @Published var budgetings: [Budgeting] = []
+    var budgetingsPublished: Published<[Budgeting]> { _budgetings }
+    var budgetingsPublisher: Published<[Budgeting]>.Publisher { $budgetings }
+    
     func save(_ budgeting: Budgeting) async throws -> Budgeting {
         throw BudgetsDBRepositoryError.failed
     }
@@ -26,7 +29,7 @@ final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
         throw BudgetsDBRepositoryError.noResult
     }
     
-    func getAll() async throws -> [Budgeting] {
+    func getAll() async throws {
         throw BudgetsDBRepositoryError.noResult
     }
     
@@ -34,6 +37,10 @@ final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
 }
 
 final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
+    @Published var budgetings: [Budgeting] = []
+    var budgetingsPublished: Published<[Budgeting]> { _budgetings }
+    var budgetingsPublisher: Published<[Budgeting]>.Publisher { $budgetings }
+    
     func save(_ budgeting: Budgeting) async throws -> Budgeting {
         return budgeting
     }
@@ -50,9 +57,8 @@ final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
         return budgeting
     }
     
-    func getAll() async throws -> [Budgeting] {
-        let mocked = Budgeting.mockBudgetingItems
-        return mocked
+    func getAll() async throws -> Void {
+        self.budgetings = Budgeting.mockBudgetingItems
     }
     
 }

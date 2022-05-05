@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct HomeView: View {
     
@@ -28,6 +29,7 @@ struct HomeView: View {
                 }.buttonStyle(.plain)
             }
             .padding()
+            .padding(.bottom)
         }
         .navigationTitle("finebuck")
         .navigationBarTitleDisplayMode(.inline)
@@ -36,7 +38,9 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        Resolver.registerMockServices()
+        
+        return NavigationView {
             HomeView()
         }.preferredColorScheme(.dark)
     }
@@ -99,7 +103,7 @@ extension HomeView {
         VStack(alignment: .leading, spacing: 12) {
             Text("Saved")
                 .font(FBFonts.kanitBold(size: .headline))
-            ForEach(Budgeting.mockBudgetingItems) { budgeting in
+            ForEach(vm.budgetings) { budgeting in
                 NavigationLink {
                     BudgetingDetailView(budgeting: budgeting)
                 } label: {

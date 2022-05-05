@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import Resolver
 
 extension BudgetingDetailView {
+    
     class BudgetingDetailViewModel: ObservableObject {
         
         var budgeting: Budgeting?
@@ -17,11 +19,10 @@ extension BudgetingDetailView {
         @Published private(set) var isLoading = false
         @Published private(set) var error: BudgetsDBRepositoryError? = nil
         
-        private let dataService: BudgetsDBRepositoryProtocol
+        @Injected private var dataService: BudgetsDBRepositoryProtocol
         
-        init(budgeting: Budgeting? = nil, dataService: BudgetsDBRepositoryProtocol) {
+        init(budgeting: Budgeting? = nil) {
             self.budgeting = budgeting
-            self.dataService = dataService
             preset()
         }
         

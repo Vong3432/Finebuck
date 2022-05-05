@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Resolver
 @testable import Finebuck
 
 // Naming structure: test_unitOfWork_stateUnderTest_expectedBehavior
@@ -14,16 +15,25 @@ import XCTest
 class BudgetingDetailViewModelTests: XCTestCase {
     typealias BudgetingDetailViewModel = BudgetingDetailView.BudgetingDetailViewModel
     
+    @LazyInjected var mockDBRepository: MockBudgetsDBRepository
+    @LazyInjected var mockFailDBRepository: MockedBudgetsDBRepositoryFailed
+    
     override class func setUp() {
         super.setUp()
     }
+    
+    override class func tearDown() {
+        super.tearDown()
+    }
 
     func test_BudgetingDetailViewModel_saveBudgetingOnly_shouldSuccess() async {
+        Resolver.reset()
+        Resolver.registerMockServices()
+        
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
-        let mockDBRepository = MockBudgetsDBRepository()
-        let vm = BudgetingDetailViewModel(budgeting: mocked, dataService: mockDBRepository)
-        
+        let vm = BudgetingDetailViewModel(budgeting: mocked)
+
         // When
         await vm.saveBudgeting(budgetItem: nil) // Users create new budgeting without any budgetItem.
         
@@ -34,10 +44,12 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingOnly_shouldFail() async {
+        Resolver.reset()
+        Resolver.registerFailMockServices()
+        
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
-        let mockDBRepository = MockedBudgetsDBRepositoryFailed()
-        let vm = BudgetingDetailViewModel(budgeting: mocked, dataService: mockDBRepository)
+        let vm = BudgetingDetailViewModel(budgeting: mocked)
         let expected: BudgetsDBRepositoryError = .failed
         
         // When
@@ -49,15 +61,17 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithNewBudgetItem_shouldSuccess() async {
+        Resolver.reset()
+        Resolver.registerMockServices()
+        
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
-        let mockDBRepository = MockBudgetsDBRepository()
         
         for _ in 0...20 {
             let ran = Bool.random()
             
             // When
-            let vm = BudgetingDetailViewModel(budgeting: mocked, dataService: mockDBRepository)
+            let vm = BudgetingDetailViewModel(budgeting: mocked)
             
             if ran {
                 // budgetItem = cost
@@ -96,16 +110,18 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithNewBudgetItem_shouldFail() async  {
+        Resolver.reset()
+        Resolver.registerFailMockServices()
+        
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
-        let mockDBRepository = MockedBudgetsDBRepositoryFailed()
         let expected: BudgetsDBRepositoryError = .failed
         
         for _ in 0...20 {
             let ran = Bool.random()
             
             // When
-            let vm = BudgetingDetailViewModel(budgeting: mocked, dataService: mockDBRepository)
+            let vm = BudgetingDetailViewModel(budgeting: mocked)
             
             if ran {
                 // budgetItem = cost
@@ -134,15 +150,17 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithUpdatedBudgetItem_shouldSuccess() async  {
+        Resolver.reset()
+        Resolver.registerMockServices()
+        
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
-        let mockDBRepository = MockBudgetsDBRepository()
         
         for _ in 0...20 {
             let ran = Bool.random()
             
             // When
-            let vm = BudgetingDetailViewModel(budgeting: mocked, dataService: mockDBRepository)
+            let vm = BudgetingDetailViewModel(budgeting: mocked)
             
             if ran {
                 // budgetItem = cost
@@ -187,15 +205,17 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithUpdatedBudgetItem_shouldFail() async  {
+        Resolver.reset()
+        Resolver.registerFailMockServices()
+        
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
-        let mockDBRepository = MockedBudgetsDBRepositoryFailed()
         
         for _ in 0...20 {
             let ran = Bool.random()
             
             // When
-            let vm = BudgetingDetailViewModel(budgeting: mocked, dataService: mockDBRepository)
+            let vm = BudgetingDetailViewModel(budgeting: mocked)
             
             if ran {
                 // budgetItem = cost
