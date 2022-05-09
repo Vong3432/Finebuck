@@ -38,7 +38,7 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        Resolver.registerMockServices()
+        Resolver.Name.mode = .mock
         
         return NavigationView {
             HomeView()

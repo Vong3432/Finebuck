@@ -27,8 +27,7 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
 
     func test_BudgetingDetailViewModel_saveBudgetingOnly_shouldSuccess() async {
-        Resolver.reset()
-        Resolver.registerMockServices()
+        Resolver.Name.mode = .mock
         
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
@@ -44,8 +43,7 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingOnly_shouldFail() async {
-        Resolver.reset()
-        Resolver.registerFailMockServices()
+        Resolver.Name.mode = .mockFailed
         
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
@@ -61,8 +59,7 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithNewBudgetItem_shouldSuccess() async {
-        Resolver.reset()
-        Resolver.registerMockServices()
+        Resolver.Name.mode = .mock
         
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
@@ -110,8 +107,7 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithNewBudgetItem_shouldFail() async  {
-        Resolver.reset()
-        Resolver.registerFailMockServices()
+        Resolver.Name.mode = .mockFailed
         
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
@@ -150,8 +146,7 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithUpdatedBudgetItem_shouldSuccess() async  {
-        Resolver.reset()
-        Resolver.registerMockServices()
+        Resolver.Name.mode = .mock
         
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]
@@ -205,8 +200,7 @@ class BudgetingDetailViewModelTests: XCTestCase {
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithUpdatedBudgetItem_shouldFail() async  {
-        Resolver.reset()
-        Resolver.registerFailMockServices()
+        Resolver.Name.mode = .mockFailed
         
         // Given
         let mocked = Budgeting.mockBudgetingItems[0]

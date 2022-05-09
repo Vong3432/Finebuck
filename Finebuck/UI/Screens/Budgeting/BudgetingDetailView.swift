@@ -20,7 +20,7 @@ struct BudgetingDetailView: View {
     @StateObject var vm: BudgetingDetailViewModel
     @FocusState private var focusedField: Field?
     
-    init(budgeting: Budgeting?, dataService: BudgetsDBRepository = BudgetsDBRepository()) {
+    init(budgeting: Budgeting?) {
         _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting))
     }
     
@@ -81,7 +81,7 @@ struct BudgetingDetailView: View {
 struct BudgetingDetailView_Previews: PreviewProvider {
     
     static var previews: some View {
-        Resolver.registerMockServices()
+        Resolver.Name.mode = .mock
         
         return Group {
             NavigationView {
