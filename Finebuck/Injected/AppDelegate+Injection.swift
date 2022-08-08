@@ -29,8 +29,7 @@ extension Resolver: ResolverRegistering {
         
         register(name: .app) {
             BudgetsDBRepository() as BudgetsDBRepositoryProtocol
-            
-        }
+        }.scope(.application)
         
         register(name: .mock) {
             MockBudgetsDBRepository() as BudgetsDBRepositoryProtocol

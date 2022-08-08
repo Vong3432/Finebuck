@@ -34,6 +34,7 @@ struct OutlinedItemView: View {
             Text(trailing)
                 .font(FBFonts.kanitSemiBold(size: .subheadline))
         }
+        .multilineTextAlignment(.leading)
         .itemOutlinedStyle()
     }
 }

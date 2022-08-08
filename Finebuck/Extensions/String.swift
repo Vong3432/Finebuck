@@ -12,3 +12,10 @@ extension String {
         return String(self.prefix(1))
     }
 }
+
+// MARK: - Firebase collection path
+extension String {
+    static let firestoreBudgetingsPath = "budgetings"
+    static let firestoreTemplatesPath = "templates"
+    static let firestoreProfilesPath = "profiles"
+}

@@ -8,11 +8,19 @@
 import SwiftUI
 
 struct CloseBarItem: View {
-    @Binding var dismiss: DismissAction
+    @Environment(\.dismiss) private var dismiss
+    
     let text: String
+    let onTap: (() -> Void)?
+    
+    init(text: String, onTap: (() -> Void)? = nil) {
+        self.text = text
+        self.onTap = onTap
+    }
     
     var body: some View {
         Button {
+            onTap?()
             dismiss()
         } label: {
             Text(text)
@@ -25,9 +33,7 @@ struct CloseBarItem: View {
 
 struct CloseBarItem_Previews: PreviewProvider {
     
-    @Environment(\.dismiss) private static var dismiss
-    
     static var previews: some View {
-        CloseBarItem(dismiss: .constant(dismiss), text: "Save")
+        CloseBarItem(text: "Save")
     }
 }

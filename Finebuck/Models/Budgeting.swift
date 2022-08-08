@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
 enum ItemIdentifier: String, Codable { case cost = "cost", earning = "earning" }
 
@@ -19,20 +20,32 @@ protocol BudgetItem {
     var rate: Double? { get set}
     var currency: Currency { get set}
     var formattedValue: String { get }
+    var calculatedValue: Double { get }
+    var index: Int? { get set }
 }
 
 struct Budgeting: Codable, Identifiable, Equatable {
     static func == (lhs: Budgeting, rhs: Budgeting) -> Bool {
-        lhs.id == rhs.id
+        lhs.id == rhs.id && lhs.title == rhs.title
     }
     
-    var id = UUID().uuidString
+    @DocumentID var id: String?
     var title: String
     var costs: [Cost]
     var earning: [Earning]
     var currency: Currency
+    var creatorUid: String
     
-    struct Cost: Codable, BudgetItem, Identifiable {
+    struct Cost: Codable, BudgetItem, Identifiable, Equatable, Comparable {
+        static func < (lhs: Budgeting.Cost, rhs: Budgeting.Cost) -> Bool {
+            guard let lI = lhs.index, let rI = rhs.index else { return false }
+            return lI < rI
+        }
+        
+        static func == (lhs: Budgeting.Cost, rhs: Budgeting.Cost) -> Bool {
+            lhs.id == rhs.id
+        }
+        
         var id = UUID().uuidString
         var budgetingID: String?
         var itemIdentifier: ItemIdentifier
@@ -41,20 +54,34 @@ struct Budgeting: Codable, Identifiable, Equatable {
         var value: Double
         var rate: Double?
         var currency: Currency
+        var index: Int?
         
         var formattedValue: String {
+            return calculatedValue.asCurrencyWith2Decimals(currency: currency)
+        }
+        
+        var calculatedValue: Double {
             if type == .fixed {
-                return value.asCurrencyWith2Decimals(currency: currency)
+                return value
             }
             else {
                 guard let rate = rate else { fatalError() }
-                let after = value * (100 - (rate * 100)) / 100
-                return after.asCurrencyWith2Decimals(currency: currency)
+                let after = value * rate
+                return after
             }
         }
     }
     
-    struct Earning: Codable, BudgetItem, Identifiable {
+    struct Earning: Codable, BudgetItem, Identifiable, Comparable, Equatable {
+        static func == (lhs: Budgeting.Earning, rhs: Budgeting.Earning) -> Bool {
+            lhs.id == rhs.id
+        }
+        
+        static func < (lhs: Budgeting.Earning, rhs: Budgeting.Earning) -> Bool {
+            guard let lI = lhs.index, let rI = rhs.index else { return false }
+            return lI < rI
+        }
+        
         var id = UUID().uuidString
         var budgetingID: String?
         var itemIdentifier: ItemIdentifier
@@ -63,15 +90,20 @@ struct Budgeting: Codable, Identifiable, Equatable {
         var value: Double
         var rate: Double?
         var currency: Currency
+        var index: Int?
         
         var formattedValue: String {
+            return calculatedValue.asCurrencyWith2Decimals(currency: currency)
+        }
+        
+        var calculatedValue: Double {
             if type == .fixed {
-                return value.asCurrencyWith2Decimals(currency: currency)
+                return value
             }
             else {
                 guard let rate = rate else { fatalError() }
-                let after = value * (100 - (rate * 100)) / 100
-                return after.asCurrencyWith2Decimals(currency: currency)
+                let after = value * rate
+                return after
             }
         }
     }
@@ -82,8 +114,8 @@ struct Budgeting: Codable, Identifiable, Equatable {
     }
     
     var net: Double {
-        let sumCosts = costs.map { $0.value }.reduce(0, +)
-        let sumEarning = earning.map { $0.value }.reduce(0, +)
+        let sumCosts = costs.map { $0.calculatedValue }.reduce(0, +)
+        let sumEarning = earning.map { $0.calculatedValue }.reduce(0, +)
         
         return sumEarning - sumCosts
     }
@@ -104,7 +136,8 @@ extension Budgeting {
             earning: [
                 Earning(budgetingID: "ABC", itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
-            currency: .myr
+            currency: .myr,
+            creatorUid: "123"
         ),
         Budgeting(
             id: "B2",
@@ -115,7 +148,8 @@ extension Budgeting {
             earning: [
                 Earning(budgetingID: "ABCD", itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .sgd)
             ],
-            currency: .sgd
+            currency: .sgd,
+            creatorUid: "123"
         )
     ]
 }

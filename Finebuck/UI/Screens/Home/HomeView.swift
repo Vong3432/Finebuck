@@ -10,7 +10,12 @@ import Resolver
 
 struct HomeView: View {
     
+    @EnvironmentObject private var appState: AppState
     @StateObject private var vm: HomeViewModel
+    
+    private var username: String {
+        appState.authService.profile?.username ?? "-"
+    }
     
     init() {
         _vm = StateObject(wrappedValue: HomeViewModel())
@@ -42,14 +47,16 @@ struct HomeView_Previews: PreviewProvider {
         
         return NavigationView {
             HomeView()
-        }.preferredColorScheme(.dark)
+        }
+        .environmentObject(AppState())
+        .preferredColorScheme(.dark)
     }
 }
 
 extension HomeView {
     private var greeting: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Hi John")
+            Text("Hi \(username)")
                 .font(FBFonts.kanitMedium(size: .fontSize(.largeTitle)))
             
             Text("You have use finebuck to help you do budgeting for **6** times!")
@@ -59,7 +66,7 @@ extension HomeView {
             Spacer()
             
             NavigationLink {
-                BudgetingDetailView(budgeting: nil)
+                BudgetingDetailView(budgeting: nil, authService: appState.authService)
             } label: {
                 createNewBudgetBtn
             }
@@ -101,13 +108,16 @@ extension HomeView {
     
     private var saved: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Saved")
+            Text("Saved plans")
                 .font(FBFonts.kanitBold(size: .headline))
             ForEach(vm.budgetings) { budgeting in
                 NavigationLink {
-                    BudgetingDetailView(budgeting: budgeting)
+                    BudgetingDetailView(budgeting: budgeting, authService: appState.authService)
                 } label: {
                     BudgetPlanItemView(budgeting: budgeting)
+                        .contextMenu {
+                            Button("Delete") { }
+                        }
                 }
             }
         }

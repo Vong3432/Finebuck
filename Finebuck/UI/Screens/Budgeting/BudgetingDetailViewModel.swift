@@ -13,6 +13,9 @@ extension BudgetingDetailView {
     class BudgetingDetailViewModel: ObservableObject {
         
         var budgeting: Budgeting?
+        @Published var costs = [Budgeting.Cost]()
+        @Published var earnings = [Budgeting.Earning]()
+        
         @Published private(set) var selectedCalculationItem: BudgetItem? = nil
         @Published var title: String = ""
         @Published private(set) var isEditingTitle = false
@@ -20,10 +23,18 @@ extension BudgetingDetailView {
         @Published private(set) var error: BudgetsDBRepositoryError? = nil
         
         @Injected private var dataService: BudgetsDBRepositoryProtocol
+        private var authService: FirebaseAuthServiceProtocol
         
-        init(budgeting: Budgeting? = nil) {
+        init(budgeting: Budgeting? = nil, authService: FirebaseAuthServiceProtocol) {
             self.budgeting = budgeting
+            self.costs = budgeting?.costs.sorted() ?? []
+            self.earnings = budgeting?.earning.sorted() ?? []
+            self.authService = authService
             preset()
+        }
+        
+        deinit {
+            print("DEINIT")
         }
         
         private func preset() {
@@ -52,91 +63,104 @@ extension BudgetingDetailView {
          -------------
          saveBudgeting { returnedBudgeting in
          
-             If "selectedCalculationItem" is nil, means is creating new budgetItem
-             
-             IF isEditingBudgetItem
-                updateBudgetItem(of: returnedBudgeting, item: budgetItem)
-             ELSE
-                createBudgetItem(of: returnedBudgeting, item: budgetItem)
+         If "selectedCalculationItem" is nil, means is creating new budgetItem
+         
+         IF isEditingBudgetItem
+         updateBudgetItem(of: returnedBudgeting, item: budgetItem)
+         ELSE
+         createBudgetItem(of: returnedBudgeting, item: budgetItem)
          
          }
          
          */
-        func saveBudgeting(budgetItem: BudgetItem?) async {
-            let savedBudgeting = Budgeting(
-                title: title,
-                costs: budgeting?.costs ?? [],
-                earning: budgeting?.earning ?? [],
-                currency: budgeting?.currency ?? .myr)
-            
-            do {
-                let saved = try await dataService.save(savedBudgeting)
-                await saveBudgetItem(of: saved, budgetItem: budgetItem)
-            }
-            catch BudgetsDBRepositoryError.noResult {
-                self.error = .noResult
-            }
-            catch BudgetsDBRepositoryError.notAuthenticated {
-                self.error = .notAuthenticated
-            }
-            catch BudgetsDBRepositoryError.failed {
-                self.error = .failed
-            } catch {
-                fatalError("Unexpected error")
+        func saveToCloud() {
+            Task {
+                do {
+                    // Ensure everything is up-to-date
+                    saveBudgeting(budgetItem: nil)
+                    
+                    guard let budgeting = budgeting, let saved = try await dataService.save(budgeting) else {
+                        throw BudgetsDBRepositoryError.failed
+                    }
+                    
+                    // Set the updated budgeting locally
+                    DispatchQueue.main.async {
+                        self.budgeting = saved
+                    }
+                }
+                catch BudgetsDBRepositoryError.noResult {
+                    DispatchQueue.main.async {
+                        self.error = .noResult
+                    }
+                }
+                catch BudgetsDBRepositoryError.notAuthenticated {
+                    DispatchQueue.main.async {
+                        self.error = .notAuthenticated
+                    }
+                }
+                catch BudgetsDBRepositoryError.failed {
+                    DispatchQueue.main.async {
+                        self.error = .failed
+                    }
+                } catch {
+                    fatalError("Unexpected error")
+                }
             }
         }
         
-        private func saveBudgetItem(of budgeting: Budgeting, budgetItem: BudgetItem?) async {
-            guard let budgetItem = budgetItem else { return }
+        func saveBudgeting(budgetItem: BudgetItem?) {
+            guard let user = authService.user else { return }
             
-            var updatedBudgeting = Budgeting(id: budgeting.id, title: budgeting.title, costs: budgeting.costs, earning: budgeting.earning, currency: budgeting.currency)
+            let savedBudgeting = Budgeting(
+                id: budgeting?.id,
+                title: title,
+                costs: costs,
+                earning: earnings,
+                currency: budgeting?.currency ?? .myr,
+                creatorUid: user.uid
+            )
+            
+            self.budgeting = savedBudgeting
+            saveBudgetItem(of: savedBudgeting, budgetItem: budgetItem)
+        }
+        
+        private func saveBudgetItem(of budgeting: Budgeting, budgetItem: BudgetItem?) {
+            guard let budgetItem = budgetItem, let user = authService.user else { return }
+            
+            let updatedBudgeting = Budgeting(id: budgeting.id, title: budgeting.title, costs: costs, earning: earnings, currency: budgeting.currency, creatorUid: user.uid)
             
             let isEditingBudgetItem = selectedCalculationItem != nil
             
             switch budgetItem.itemIdentifier {
                 
             case .cost:
-                let cost = Budgeting.Cost(id: budgetItem.id, budgetingID: budgeting.id, itemIdentifier: .cost, title: budgetItem.title, type: budgetItem.type, value: budgetItem.value, rate: budgetItem.rate, currency: budgetItem.currency)
+                var cost = Budgeting.Cost(id: budgetItem.id, budgetingID: budgeting.id, itemIdentifier: .cost, title: budgetItem.title, type: budgetItem.type, value: budgetItem.value, rate: budgetItem.rate, currency: budgetItem.currency, index: budgetItem.index)
                 
                 if isEditingBudgetItem {
-                    let idx = updatedBudgeting.costs.firstIndex { $0.id == budgetItem.id }
+                    let idx = costs.firstIndex { $0.id == budgetItem.id }
                     guard let idx = idx else { return }
                     
-                    updatedBudgeting.costs[idx] = cost
+                    costs[idx] = cost
                 } else {
-                    updatedBudgeting.costs.append(cost)
+                    cost.index = costs.count - 1
+                    costs.append(cost)
                 }
                 
             case .earning:
-                let earning = Budgeting.Earning(id: budgetItem.id, budgetingID: budgeting.id, itemIdentifier: .earning, title: budgetItem.title, type: budgetItem.type, value: budgetItem.value, rate: budgetItem.rate, currency: budgetItem.currency)
+                var earning = Budgeting.Earning(id: budgetItem.id, budgetingID: budgeting.id, itemIdentifier: .earning, title: budgetItem.title, type: budgetItem.type, value: budgetItem.value, rate: budgetItem.rate, currency: budgetItem.currency, index: budgetItem.index)
                 
                 if isEditingBudgetItem {
-                    let idx = updatedBudgeting.earning.firstIndex { $0.id == budgetItem.id }
+                    let idx = earnings.firstIndex { $0.id == budgetItem.id }
                     guard let idx = idx else { return }
                     
-                    updatedBudgeting.earning[idx] = earning
+                    earnings[idx] = earning
                 } else {
-                    updatedBudgeting.earning.append(earning)
+                    earning.index = earnings.count - 1
+                    earnings.append(earning)
                 }
             }
             
-            // Updates to server
-            do {
-                let savedBudgeting = try await dataService.update(budgeting, with: updatedBudgeting)
-                self.budgeting = savedBudgeting
-            }
-            catch BudgetsDBRepositoryError.noResult {
-                self.error = .noResult
-            }
-            catch BudgetsDBRepositoryError.notAuthenticated {
-                self.error = .notAuthenticated
-            }
-            catch BudgetsDBRepositoryError.failed {
-                self.error = .failed
-            }
-            catch {
-                fatalError("Unexpected error")
-            }
+            self.budgeting = updatedBudgeting
         }
     }
 }

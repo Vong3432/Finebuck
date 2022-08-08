@@ -6,9 +6,8 @@
 //
 
 import SwiftUI
-import HalfModal
 import Resolver
-
+import UniformTypeIdentifiers
 
 struct BudgetingDetailView: View {
     private enum Field: Int, CaseIterable {
@@ -19,9 +18,11 @@ struct BudgetingDetailView: View {
     @EnvironmentObject var appState: AppState
     @StateObject var vm: BudgetingDetailViewModel
     @FocusState private var focusedField: Field?
+    @State private var draggedCost: Budgeting.Cost?
+    @State private var draggedEarning: Budgeting.Earning?
     
-    init(budgeting: Budgeting?) {
-        _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting))
+    init(budgeting: Budgeting?, authService: FirebaseAuthServiceProtocol) {
+        _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting, authService: authService))
     }
     
     var body: some View {
@@ -52,28 +53,26 @@ struct BudgetingDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                CloseBarItem(dismiss: .constant(dismiss), text: "Save")
+                CloseBarItem(text: "Save", onTap: {
+                    vm.saveToCloud()
+                })
             }
         }
-//        .sheet(isPresented: $appState.showActionSheet, detents: [.medium(), .large()], selectedDetentIdentifier: .medium, cornerRadius: 15.0) {
-//
-//        }
     }
     
     private func closeSheet(_ savedBudgetItem: BudgetItem) {
         Task {
-            await vm.saveBudgeting(budgetItem: savedBudgetItem)
+            vm.saveBudgeting(budgetItem: savedBudgetItem)
             vm.viewBudgetItem(nil)
         }
         appState.showActionSheet = false
     }
     
     private func generateBudgetItemSubtitle(_ budget: BudgetItem) -> String {
-        
         if budget.type == .fixed {
             return budget.type.rawValue
         } else {
-            return "\(budget.type.rawValue) \(budget.rate?.asPercentString() ?? "0%")"
+            return "\(budget.type.rawValue) \(budget.rate?.asPercentString() ?? "0%") of \(budget.formattedValue)"
         }
     }
 }
@@ -85,15 +84,9 @@ struct BudgetingDetailView_Previews: PreviewProvider {
         
         return Group {
             NavigationView {
-                BudgetingDetailView(budgeting: nil)
+                BudgetingDetailView(budgeting: nil, authService: FirebaseAuthService())
             }
             .previewDisplayName("Create budgeting")
-            
-            //            NavigationView {
-            //                BudgetingDetailView(budgeting: .mockBudgetingItems[0])
-            //            }
-            //            .preferredColorScheme(.dark)
-            //            .previewDisplayName("Edit budgeting")
         }
         .preferredColorScheme(.dark)
         .environmentObject(AppState())
@@ -145,9 +138,9 @@ extension BudgetingDetailView {
     private var costs: some View {
         VStack(alignment: .leading, spacing: 10) {
             Section {
-                if let costs = vm.budgeting?.costs {
-                    ForEach(costs) { cost in
-                        Button {
+                if vm.costs.isEmpty == false {
+                    ForEach(vm.costs) { cost in
+                        Button { [unowned vm] in
                             appState.showActionSheet = true
                             vm.viewBudgetItem(cost)
                         } label: {
@@ -155,6 +148,28 @@ extension BudgetingDetailView {
                                 title: cost.title,
                                 subtitle: generateBudgetItemSubtitle(cost),
                                 trailing: cost.formattedValue)
+                            .contextMenu {
+                                Button("Delete") {}
+                            }
+                            .onDrag {
+                                self.draggedCost = cost
+                                return NSItemProvider(item: nil, typeIdentifier: cost.id)
+                            }
+                            .onDrop(
+                                of: [UTType.text],
+                                delegate: MyDropDelegate<Budgeting.Cost>(
+                                    item: cost,
+                                    items: $vm.costs,
+                                    draggedItem: $draggedCost,
+                                    completion: { first, second in
+                                        let firstCost = vm.costs[first]
+                                        let secondCost = vm.costs[second]
+                                        
+                                        vm.costs[first].index = secondCost.index
+                                        vm.costs[second].index = firstCost.index
+                                    }
+                                )
+                            )
                         }
                     }
                 } else {
@@ -173,9 +188,9 @@ extension BudgetingDetailView {
     private var earning: some View {
         VStack(alignment: .leading, spacing: 10) {
             Section {
-                if let earnings = vm.budgeting?.earning {
-                    ForEach(earnings) { earning in
-                        Button {
+                if vm.earnings.isEmpty == false {
+                    ForEach(vm.earnings) { earning in
+                        Button { [unowned vm] in
                             appState.showActionSheet = true
                             vm.viewBudgetItem(earning)
                         } label: {
@@ -183,6 +198,28 @@ extension BudgetingDetailView {
                                 title: earning.title,
                                 subtitle: generateBudgetItemSubtitle(earning),
                                 trailing: earning.formattedValue)
+                            .contextMenu {
+                                Button("Delete") {}
+                            }
+                            .onDrag {
+                                self.draggedEarning = earning
+                                return NSItemProvider(item: nil, typeIdentifier: earning.id)
+                            }
+                            .onDrop(
+                                of: [UTType.text],
+                                delegate: MyDropDelegate<Budgeting.Earning>(
+                                    item: earning,
+                                    items: $vm.earnings,
+                                    draggedItem: $draggedEarning,
+                                    completion: { first, second in
+                                        let firstEarning = vm.earnings[first]
+                                        let secondEarning = vm.earnings[second]
+                                        
+                                        vm.earnings[first].index = secondEarning.index
+                                        vm.earnings[second].index = firstEarning.index
+                                    }
+                                )
+                            )
                         }
                     }
                 } else {

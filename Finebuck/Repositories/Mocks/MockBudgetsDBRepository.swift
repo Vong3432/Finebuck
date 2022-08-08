@@ -9,11 +9,15 @@ import Foundation
 import Combine
 
 final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
+    func removeListeners() {
+        
+    }
+    
     @Published var budgetings: [Budgeting] = []
     var budgetingsPublished: Published<[Budgeting]> { _budgetings }
     var budgetingsPublisher: Published<[Budgeting]>.Publisher { $budgetings }
     
-    func save(_ budgeting: Budgeting) async throws -> Budgeting {
+    func save(_ budgeting: Budgeting) async throws -> Budgeting? {
         throw BudgetsDBRepositoryError.failed
     }
     
@@ -33,7 +37,6 @@ final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
         throw BudgetsDBRepositoryError.noResult
     }
     
-    
 }
 
 final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
@@ -41,7 +44,7 @@ final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
     var budgetingsPublished: Published<[Budgeting]> { _budgetings }
     var budgetingsPublisher: Published<[Budgeting]>.Publisher { $budgetings }
     
-    func save(_ budgeting: Budgeting) async throws -> Budgeting {
+    func save(_ budgeting: Budgeting) async throws -> Budgeting? {
         return budgeting
     }
     
@@ -59,6 +62,11 @@ final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
     
     func getAll() async throws -> Void {
         self.budgetings = Budgeting.mockBudgetingItems
+    }
+    
+    
+    func removeListeners() {
+        
     }
     
 }

@@ -9,21 +9,17 @@ import Foundation
 
 extension BudgetPlanDetailFormView {
     class BudgetPlanDetailFormViewModel: ObservableObject {
-        
         let calculationItem: BudgetItem?
-        
         // UI
         @Published private(set) var rateFieldOpacity: Double = 0
         @Published private(set) var fixedAmountFieldOpacity: Double = 1
-        
         // Form fields and info
         @Published var label = ""
-        @Published var amount: Double? = nil
-        @Published var rate: Double? = nil
+        @Published var amount: Double?
+        @Published var rate: Double?
         @Published private(set) var itemIdentifier: ItemIdentifier = .cost
         @Published private(set) var budgetCalculateType: Budgeting.CalculateType = .fixed
         @Published private(set) var currency: Currency = .myr
-        
         var shouldDisableDoneBtn: Bool {
             if label.trimmingCharacters(in: .whitespaces).isEmpty || amount == nil { return true }
             

@@ -6,14 +6,22 @@
 //
 
 import Foundation
+import Combine
 
-protocol AppStateProtocol {
-    var selectedTab: ContentView.Tab { get set }
-    var showActionSheet: Bool { get set }
-}
-
-final class AppState: ObservableObject, AppStateProtocol {
-    @Published var selectedTab: ContentView.Tab = .home
+final class AppState: ObservableObject {
+    @Published var selectedTab: AuthorizedRootView.Tab = .home
     @Published var showActionSheet: Bool = false
+    
+    private(set) var authService = FirebaseAuthService()
+    private var cancellable = Set<AnyCancellable>()
+    
+    init() {
+        authService.objectWillChange.sink { [weak self] _ in
+            // switch to home tab if user logged out
+            if self?.authService.isAuthenticated == false {
+                self?.selectedTab = .home
+            }
+        }.store(in: &cancellable)
+    }
 }
 

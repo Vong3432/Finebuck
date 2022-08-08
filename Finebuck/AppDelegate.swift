@@ -15,6 +15,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
         
+        #if DEBUG
+            let settings = Firestore.firestore().settings
+            settings.host = "localhost:8080"
+            Auth.auth().useEmulator(withHost:"localhost", port:9099)
+            settings.isPersistenceEnabled = false
+            settings.isSSLEnabled = false
+            Firestore.firestore().settings = settings
+        #endif
+        
         // Handle testing
         let env = ProcessInfo.processInfo.environment
         if let uiTests = env["UITESTS"], uiTests == "1" {

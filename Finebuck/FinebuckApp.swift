@@ -14,7 +14,7 @@ struct FinebuckApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(authService: appState.authService)
                 .environmentObject(appState)
         }
     }
