@@ -13,9 +13,9 @@ import GoogleSignInSwift
 struct SignInView: View {
     
     @StateObject private var vm: SignInViewModel
-    var authService: FirebaseAuthServiceProtocol
+    var authService: AnyFirebaseAuthService<User>
     
-    init(authService: FirebaseAuthServiceProtocol) {
+    init(authService: AnyFirebaseAuthService<User>) {
         _vm = StateObject(wrappedValue: SignInViewModel(authService: authService))
         self.authService = authService
     }
@@ -43,7 +43,7 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView(authService: FirebaseAuthService())
+        SignInView(authService: AnyFirebaseAuthService(FirebaseAuthService()))
     }
 }
 

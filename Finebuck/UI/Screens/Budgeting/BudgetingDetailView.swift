@@ -8,6 +8,7 @@
 import SwiftUI
 import Resolver
 import UniformTypeIdentifiers
+import FirebaseAuth
 
 struct BudgetingDetailView: View {
     private enum Field: Int, CaseIterable {
@@ -21,7 +22,7 @@ struct BudgetingDetailView: View {
     @State private var draggedCost: Budgeting.Cost?
     @State private var draggedEarning: Budgeting.Earning?
     
-    init(budgeting: Budgeting?, authService: FirebaseAuthServiceProtocol) {
+    init(budgeting: Budgeting?, authService: AnyFirebaseAuthService<User>) {
         _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting, authService: authService))
     }
     
@@ -72,7 +73,7 @@ struct BudgetingDetailView: View {
         if budget.type == .fixed {
             return budget.type.rawValue
         } else {
-            return "\(budget.type.rawValue) \(budget.rate?.asPercentString() ?? "0%") of \(budget.formattedValue)"
+            return "\(budget.type.rawValue) \(budget.rate?.asPercentString() ?? "0%") of \(budget.value)"
         }
     }
 }
@@ -84,7 +85,7 @@ struct BudgetingDetailView_Previews: PreviewProvider {
         
         return Group {
             NavigationView {
-                BudgetingDetailView(budgeting: nil, authService: FirebaseAuthService())
+                BudgetingDetailView(budgeting: nil, authService: AnyFirebaseAuthService(FirebaseAuthService()))
             }
             .previewDisplayName("Create budgeting")
         }

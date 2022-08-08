@@ -17,9 +17,9 @@ struct GoogleSignInBtnView: UIViewRepresentable {
     let clientID = FirebaseApp.app()?.options.clientID
     let config: GIDConfiguration
     let style: GIDSignInButtonStyle
-    let authService: FirebaseAuthServiceProtocol
+    let authService: AnyFirebaseAuthService<User>
     
-    init(style: GIDSignInButtonStyle? = .standard, authService: FirebaseAuthServiceProtocol) {
+    init(style: GIDSignInButtonStyle? = .standard, authService: AnyFirebaseAuthService<User>) {
         self.config = GIDConfiguration(clientID: clientID ?? "")
         self.style = style!
         self.authService = authService

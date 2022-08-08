@@ -25,7 +25,7 @@ struct ContentView: View {
                 }
                 
             } else {
-                SignInView(authService: authService)
+                SignInView(authService: AnyFirebaseAuthService(authService))
             }
         }
     }

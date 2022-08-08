@@ -66,7 +66,7 @@ extension HomeView {
             Spacer()
             
             NavigationLink {
-                BudgetingDetailView(budgeting: nil, authService: appState.authService)
+                BudgetingDetailView(budgeting: nil, authService: AnyFirebaseAuthService(appState.authService))
             } label: {
                 createNewBudgetBtn
             }
@@ -112,7 +112,7 @@ extension HomeView {
                 .font(FBFonts.kanitBold(size: .headline))
             ForEach(vm.budgetings) { budgeting in
                 NavigationLink {
-                    BudgetingDetailView(budgeting: budgeting, authService: appState.authService)
+                    BudgetingDetailView(budgeting: budgeting, authService: AnyFirebaseAuthService(appState.authService))
                 } label: {
                     BudgetPlanItemView(budgeting: budgeting)
                         .contextMenu {

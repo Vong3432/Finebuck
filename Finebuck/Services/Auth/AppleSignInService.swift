@@ -14,9 +14,9 @@ class AppleSignInService {
     
     // Unhashed nonce.
     private var currentNonce: String?
-    var authService: FirebaseAuthServiceProtocol?
+    var authService: AnyFirebaseAuthService<User>?
     
-    init(authService: FirebaseAuthServiceProtocol) {
+    init(authService: AnyFirebaseAuthService<User>) {
         self.authService = authService
     }
     

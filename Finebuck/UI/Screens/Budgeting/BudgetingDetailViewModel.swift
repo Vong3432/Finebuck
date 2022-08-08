@@ -7,6 +7,7 @@
 
 import Foundation
 import Resolver
+import FirebaseAuth
 
 extension BudgetingDetailView {
     
@@ -23,9 +24,9 @@ extension BudgetingDetailView {
         @Published private(set) var error: BudgetsDBRepositoryError? = nil
         
         @Injected private var dataService: BudgetsDBRepositoryProtocol
-        private var authService: FirebaseAuthServiceProtocol
+        private var authService: AnyFirebaseAuthService<User>
         
-        init(budgeting: Budgeting? = nil, authService: FirebaseAuthServiceProtocol) {
+        init(budgeting: Budgeting? = nil, authService: AnyFirebaseAuthService<User>) {
             self.budgeting = budgeting
             self.costs = budgeting?.costs.sorted() ?? []
             self.earnings = budgeting?.earning.sorted() ?? []

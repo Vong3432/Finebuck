@@ -16,7 +16,7 @@ extension SignInView {
         
         var appleSignInService: AppleSignInService?
         
-        init(authService: FirebaseAuthServiceProtocol) {
+        init(authService: AnyFirebaseAuthService<User>) {
             appleSignInService = AppleSignInService(authService: authService)
         }
         
