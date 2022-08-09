@@ -79,10 +79,10 @@ extension BudgetPlanDetailFormView {
                     vm.switchFormType(to: .cost)
                 } label: {
                     Text("Cost")
-                        .padding()
                         .font(FBFonts.kanitSemiBold(size: .headline))
+                        .padding()
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
                 .itemOutlinedStyle(borderColor: vm.itemIdentifier == .cost ? Color.theme.primary : Color.theme.gray)
                 
                 
@@ -92,10 +92,10 @@ extension BudgetPlanDetailFormView {
                     vm.switchFormType(to: .earning)
                 } label: {
                     Text("Earning")
-                        .padding()
                         .font(FBFonts.kanitSemiBold(size: .headline))
+                        .padding()
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
                 .itemOutlinedStyle(borderColor: vm.itemIdentifier == .earning ? Color.theme.primary : Color.theme.gray)
             }
         } header: {
@@ -112,10 +112,10 @@ extension BudgetPlanDetailFormView {
                     vm.switchCalculateType(to: .fixed)
                 } label: {
                     Text(Budgeting.CalculateType.fixed.rawValue)
-                        .padding()
                         .font(FBFonts.kanitSemiBold(size: .headline))
+                        .padding()
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
                 .itemOutlinedStyle(borderColor: vm.budgetCalculateType == .fixed ? Color.theme.primary : Color.theme.gray)
                 
                 
@@ -125,10 +125,10 @@ extension BudgetPlanDetailFormView {
                     vm.switchCalculateType(to: .rate)
                 } label: {
                     Text(Budgeting.CalculateType.rate.rawValue)
-                        .padding()
                         .font(FBFonts.kanitSemiBold(size: .headline))
+                        .padding()
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
                 .itemOutlinedStyle(borderColor: vm.budgetCalculateType == .rate ? Color.theme.primary : Color.theme.gray)
             }
         } header: {

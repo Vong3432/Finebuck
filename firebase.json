@@ -5,9 +5,11 @@
   },
   "emulators": {
     "auth": {
+      "host": "192.168.1.103",
       "port": 9099
     },
     "firestore": {
+      "host": "192.168.1.103",
       "port": 8080
     },
     "ui": {

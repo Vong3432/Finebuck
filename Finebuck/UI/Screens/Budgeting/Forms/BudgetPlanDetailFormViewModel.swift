@@ -73,30 +73,15 @@ extension BudgetPlanDetailFormView {
         }
         
         func save() -> BudgetItem? {
-            var saved: BudgetItem? = nil
-            
-            if itemIdentifier == .cost {
-                saved = Budgeting.Cost(
-                    id: calculationItem?.id ?? UUID().uuidString,
-                    itemIdentifier: .cost,
-                    title: label,
-                    type: budgetCalculateType,
-                    value: amount!,
-                    rate: rate,
-                    currency: currency)
-            } else {
-                saved = Budgeting.Earning(
-                    id: calculationItem?.id ?? UUID().uuidString,
-                    itemIdentifier: .earning,
-                    title: label,
-                    type: budgetCalculateType,
-                    value: amount!,
-                    rate: rate,
-                    currency: currency
-                )
-            }
-            
-            guard let saved = saved else { return nil }
+            let saved = Budgeting.Cost(
+                id: calculationItem?.id ?? UUID().uuidString,
+                itemIdentifier: itemIdentifier,
+                title: label,
+                type: budgetCalculateType,
+                value: amount!,
+                rate: rate,
+                currency: currency
+            )
 
             return saved
         }

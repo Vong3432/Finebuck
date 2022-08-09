@@ -258,12 +258,14 @@ extension BudgetingDetailView {
                 vm.viewBudgetItem(nil)
                 appState.showActionSheet = true
             } label: {
-                loadSVG("Plus")
-                Text("Add cost or earning")
-                    .font(FBFonts.kanitRegular(size: .body))
+                HStack {
+                    loadSVG("Plus")
+                    Text("Add cost or earning")
+                        .font(FBFonts.kanitRegular(size: .body))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .itemFilledStyle()
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .itemFilledStyle()
             .buttonStyle(.plain)
             .padding()
         }

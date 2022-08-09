@@ -44,6 +44,7 @@
 		3B95A63E281448EC00703DC3 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A63D281448EC00703DC3 /* Double.swift */; };
 		3B95A64028144C4B00703DC3 /* ItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A63F28144C4B00703DC3 /* ItemViewModifier.swift */; };
 		3B95A643281451D600703DC3 /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B95A642281451D600703DC3 /* TemplateCardView.swift */; };
+		3B9F0B2628A18565008334EC /* MockFirebaseAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9F0B2528A18565008334EC /* MockFirebaseAuthService.swift */; };
 		3BA7037A28203F1C00DA0BF8 /* BudgetingDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037928203F1C00DA0BF8 /* BudgetingDetailViewModel.swift */; };
 		3BA7037D2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037C2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift */; };
 		3BA7037F2820489700DA0BF8 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA7037E2820489700DA0BF8 /* Currency.swift */; };
@@ -99,6 +100,7 @@
 		3B3557E828228360007CB31E /* BudgetingDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetingDetailViewModelTests.swift; sourceTree = "<group>"; };
 		3B3557EA282290F4007CB31E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B3BCD3C28A16405004F7B4A /* MyDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDropDelegate.swift; sourceTree = "<group>"; };
+		3B4435EE28A2902E00A2E576 /* Finebuck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Finebuck.entitlements; sourceTree = "<group>"; };
 		3B5DA426289FCE4700DBD3C5 /* AuthorizedRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizedRootView.swift; sourceTree = "<group>"; };
 		3B5DA428289FCEBD00DBD3C5 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		3B5DA42C289FCF6E00DBD3C5 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 		3B95A63D281448EC00703DC3 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		3B95A63F28144C4B00703DC3 /* ItemViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModifier.swift; sourceTree = "<group>"; };
 		3B95A642281451D600703DC3 /* TemplateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardView.swift; sourceTree = "<group>"; };
+		3B9F0B2528A18565008334EC /* MockFirebaseAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFirebaseAuthService.swift; sourceTree = "<group>"; };
 		3BA7037928203F1C00DA0BF8 /* BudgetingDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetingDetailViewModel.swift; sourceTree = "<group>"; };
 		3BA7037C2820425000DA0BF8 /* BudgetPlanDetailFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPlanDetailFormViewModel.swift; sourceTree = "<group>"; };
 		3BA7037E2820489700DA0BF8 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
@@ -289,6 +292,14 @@
 			path = Templates;
 			sourceTree = "<group>";
 		};
+		3B9F0B2428A18558008334EC /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				3B9F0B2528A18565008334EC /* MockFirebaseAuthService.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		3B9FAECF282405580040EECE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -357,6 +368,7 @@
 		3BD989F928142F5A00A5BBEC /* Finebuck */ = {
 			isa = PBXGroup;
 			children = (
+				3B4435EE28A2902E00A2E576 /* Finebuck.entitlements */,
 				3B95A63A281446B000703DC3 /* Info.plist */,
 				3B69DE28289D66CC0054B1CC /* GoogleService-Info.plist */,
 				3B95A62D2814463400703DC3 /* Fonts */,
@@ -536,6 +548,7 @@
 		3BDE25D02827B1D400254DB1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3B9F0B2428A18558008334EC /* Mocks */,
 				3BDE25D12827B1D900254DB1 /* Auth */,
 			);
 			path = Services;
@@ -883,6 +896,7 @@
 				3B3557EB282290F4007CB31E /* AppDelegate.swift in Sources */,
 				3B95A643281451D600703DC3 /* TemplateCardView.swift in Sources */,
 				3B6BA8CE28A0EFA4002F2C48 /* FirstTimeSetupProfileView.swift in Sources */,
+				3B9F0B2628A18565008334EC /* MockFirebaseAuthService.swift in Sources */,
 				3BD989FD28142F5A00A5BBEC /* ContentView.swift in Sources */,
 				3B5DA42F289FD00000DBD3C5 /* AppleSignInService.swift in Sources */,
 				3B64B68128147DB700940AEB /* Budgeting.swift in Sources */,
@@ -1068,6 +1082,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Finebuck/Finebuck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Finebuck/Preview Content\"";
@@ -1102,6 +1117,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Finebuck/Finebuck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Finebuck/Preview Content\"";
@@ -1175,7 +1191,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2CE51EBC5A47427072860DEB /* Pods-Finebuck-FinebuckUITests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Finebuck.app/Finebuck";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FNHC5UHDLA;
@@ -1194,7 +1211,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 91A332F22A109D3D6CB74521 /* Pods-Finebuck-FinebuckUITests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Finebuck.app/Finebuck";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FNHC5UHDLA;

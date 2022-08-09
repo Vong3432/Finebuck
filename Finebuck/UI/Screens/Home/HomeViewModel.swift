@@ -15,15 +15,11 @@ extension HomeView {
         @Injected private var dataService: BudgetsDBRepositoryProtocol
         private var cancellables = Set<AnyCancellable>()
 
-        init() {            
+        init() {
             subscribe()
         }
         
         private func subscribe() {
-            Task { [weak self] in
-                await self?.loadBudgetings()
-            }
-            
             dataService.budgetingsPublisher
                 .sink { [weak self] returnedBudgeting in
                     DispatchQueue.main.async {                    
@@ -33,8 +29,10 @@ extension HomeView {
                 .store(in: &cancellables)
         }
         
-        private func loadBudgetings() async {
-            try? await dataService.getAll()
+        func loadBudgetings(uid: String) {
+            Task {
+                try? await dataService.getAll(fromUserId: uid)
+            }
         }
     }
 }

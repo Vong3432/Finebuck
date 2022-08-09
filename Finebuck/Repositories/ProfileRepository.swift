@@ -15,17 +15,17 @@ protocol ProfileRepositoryProtocol {
 }
 
 final class ProfileRepository: ProfileRepositoryProtocol {
-    
     private let store = Firestore.firestore()
+    private let path = "profiles"
     
     func save(_ user: User, name: String) async throws -> Profile? {
         let newProfile = Profile(username: name, email: user.email!, avatarUrl: user.photoURL?.absoluteString)
-        try store.collection(.firestoreProfilesPath).document(user.uid).setData(from: newProfile, merge: true)
+        try store.collection(path).document(user.uid).setData(from: newProfile, merge: true)
         return try await get(user.uid)
     }
     
     func get(_ documentID: String) async throws -> Profile? {
-        return try await store.collection(.firestoreProfilesPath).document(documentID).getDocument(as: Profile.self)
+        return try await store.collection(path).document(documentID).getDocument(as: Profile.self)
     }
     
 }

@@ -9,6 +9,10 @@ import Foundation
 import Combine
 
 final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
+    func reset() {
+        
+    }
+    
     func removeListeners() {
         
     }
@@ -21,7 +25,7 @@ final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
         throw BudgetsDBRepositoryError.failed
     }
     
-    func update(_ targetBudgeting: Budgeting, with: Budgeting) async throws -> Budgeting {
+    func update(_ targetBudgeting: Budgeting, with: [String: Any]) async throws -> Budgeting {
         throw BudgetsDBRepositoryError.failed
     }
     
@@ -33,7 +37,7 @@ final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
         throw BudgetsDBRepositoryError.noResult
     }
     
-    func getAll() async throws {
+    func getAll(fromUserId: String) async throws {
         throw BudgetsDBRepositoryError.noResult
     }
     
@@ -48,8 +52,8 @@ final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
         return budgeting
     }
     
-    func update(_ targetBudgeting: Budgeting, with: Budgeting) async throws -> Budgeting {
-        return with
+    func update(_ targetBudgeting: Budgeting, with: [String: Any]) async throws -> Budgeting {
+        return targetBudgeting
     }
     
     func delete(targetBudgeting: Budgeting) async throws {
@@ -60,10 +64,13 @@ final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
         return budgeting
     }
     
-    func getAll() async throws -> Void {
+    func getAll(fromUserId: String) async throws -> Void {
         self.budgetings = Budgeting.mockBudgetingItems
     }
     
+    func reset() {
+        
+    }
     
     func removeListeners() {
         

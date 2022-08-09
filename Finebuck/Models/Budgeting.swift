@@ -11,8 +11,8 @@ import FirebaseFirestoreSwift
 enum ItemIdentifier: String, Codable { case cost = "cost", earning = "earning" }
 
 protocol BudgetItem {
-    var id: String { get }
-    var budgetingID: String? { get set }
+    var id: String? { get }
+//    var budgetingID: String? { get set }
     var itemIdentifier: ItemIdentifier { get set }
     var title: String { get set }
     var type: Budgeting.CalculateType { get set}
@@ -46,8 +46,8 @@ struct Budgeting: Codable, Identifiable, Equatable {
             lhs.id == rhs.id
         }
         
-        var id = UUID().uuidString
-        var budgetingID: String?
+        var id: String? = UUID().uuidString
+//        var budgetingID: String?
         var itemIdentifier: ItemIdentifier
         var title: String
         var type: CalculateType
@@ -82,8 +82,8 @@ struct Budgeting: Codable, Identifiable, Equatable {
             return lI < rI
         }
         
-        var id = UUID().uuidString
-        var budgetingID: String?
+        var id: String? = UUID().uuidString
+//        var budgetingID: String?
         var itemIdentifier: ItemIdentifier
         var title: String
         var type: CalculateType
@@ -131,10 +131,10 @@ extension Budgeting {
             id: "B1",
             title: "Budgeting Plan 1",
             costs: [
-                Cost(budgetingID: "ABC", itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+                Cost(itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             earning: [
-                Earning(budgetingID: "ABC", itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+                Earning(itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             currency: .myr,
             creatorUid: "123"
@@ -143,10 +143,10 @@ extension Budgeting {
             id: "B2",
             title: "Budgeting Plan 2",
             costs: [
-                Cost(budgetingID: "ABCD", itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
+                Cost(itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             earning: [
-                Earning(budgetingID: "ABCD", itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .sgd)
+                Earning(itemIdentifier: .earning, title: "Salary", type: .fixed, value: 5.0, rate: nil, currency: .sgd)
             ],
             currency: .sgd,
             creatorUid: "123"

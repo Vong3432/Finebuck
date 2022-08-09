@@ -111,7 +111,7 @@ final class FirebaseAuthService: ObservableObject, FirebaseAuthServiceProtocol {
             updateLoadingStatus(loading: true)
             updateErrorMsg(msg: nil)
             try Auth.auth().signOut()
-            dataService.removeListeners()
+            cleanup()
             profile = nil
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -120,6 +120,12 @@ final class FirebaseAuthService: ObservableObject, FirebaseAuthServiceProtocol {
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
+    }
+    
+    // MARK: - Cleanup
+    func cleanup() {
+        dataService.reset()
+        dataService.removeListeners()
     }
 }
 

@@ -28,8 +28,11 @@ struct SignInView: View {
                 VStack(alignment: .leading) {
                     previews
                     signInBtns
+                    
+                    Spacer()
                 }
                 .padding(.vertical)
+                .padding()
                 .padding()
                 
             }
@@ -57,7 +60,7 @@ extension SignInView {
                     .padding()
                     .scaledToFit()
                     .frame(maxWidth: .infinity)
-                    .frame(height: 300)
+                    .frame(height: 250)
                 
                 Text("Customizable label")
                     .font(.title)
@@ -77,7 +80,7 @@ extension SignInView {
                     .padding()
                     .scaledToFit()
                     .frame(maxWidth: .infinity)
-                    .frame(height: 300)
+                    .frame(height: 250)
                     .shadow(radius: 20)
                 
                 Text("Reusable templates")
@@ -93,7 +96,7 @@ extension SignInView {
             }
             .padding(.top)
         }
-        .frame(height: 550)
+        .frame(height: 500)
         .tabViewStyle(.page)
         .indexViewStyle(.page(backgroundDisplayMode: .always))
     }
