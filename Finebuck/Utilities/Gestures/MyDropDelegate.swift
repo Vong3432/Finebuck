@@ -27,8 +27,8 @@ struct MyDropDelegate<T>: DropDelegate where T: Equatable {
             let to = items.firstIndex(of: item)!
             withAnimation(.default) {
                 self.items.move(fromOffsets: IndexSet(integer: from), toOffset: to > from ? to + 1 : to)
+                completion?(from, to)
             }
-            completion?(from, to)
         }
     }
 }

@@ -14,21 +14,25 @@ final class FirebaseAuthService: ObservableObject, FirebaseAuthServiceProtocol {
     
 //    static let shared: FirebaseAuthService = FirebaseAuthService()
     let profileRepository = ProfileRepository()
-    @Injected private var dataService: BudgetsDBRepositoryProtocol
+    @Injected private var dataService: AnyFirestoreDBRepository<Budgeting>
     
     private var authenticationStateHandler: AuthStateDidChangeListenerHandle?
     
     @Published var isLoading = false
+    var isLoadingPublished: Published<Bool> { _isLoading }
+    var isLoadingPublisher: Published<Bool>.Publisher { $isLoading }
     
     @Published var user: User? = nil
-    var userPublisher: Published<User?> { _user }
-    var userPublished: Published<User?>.Publisher { $user }
+    var userPublished: Published<User?> { _user }
+    var userPublisher: Published<User?>.Publisher { $user }
     
     @Published var errorMsg: String?
-    var errorMsgPublisher: Published<String?> { _errorMsg }
-    var errorMsgPublished: Published<String?>.Publisher { $errorMsg }
+    var errorMsgPublished: Published<String?> { _errorMsg }
+    var errorMsgPublisher: Published<String?>.Publisher { $errorMsg }
     
-    @Published var profile: Profile? = nil
+    @Published var profile: Profile?
+    var profilePublished: Published<Profile?> { _profile }
+    var profilePublisher: Published<Profile?>.Publisher { $profile }
     
     init() {
         addListeners()
@@ -46,7 +50,15 @@ final class FirebaseAuthService: ObservableObject, FirebaseAuthServiceProtocol {
         authenticationStateHandler = Auth.auth()
             .addStateDidChangeListener { [weak self] _, user in
                 if let user = user {
+                    // logged in ...
+                    
+                    // check profile
                     self?.getProfile(for: user)
+                } else {
+                    // signout
+                    
+                    // cleanup
+                    self?.cleanup()
                 }
                 self?.user = user
             }
@@ -111,12 +123,6 @@ final class FirebaseAuthService: ObservableObject, FirebaseAuthServiceProtocol {
             updateLoadingStatus(loading: true)
             updateErrorMsg(msg: nil)
             try Auth.auth().signOut()
-            cleanup()
-            profile = nil
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.updateLoadingStatus(loading: false)
-            }
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
@@ -124,8 +130,13 @@ final class FirebaseAuthService: ObservableObject, FirebaseAuthServiceProtocol {
     
     // MARK: - Cleanup
     func cleanup() {
-        dataService.reset()
         dataService.removeListeners()
+        dataService.reset()
+        profile = nil
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.updateLoadingStatus(loading: false)
+        }
     }
 }
 

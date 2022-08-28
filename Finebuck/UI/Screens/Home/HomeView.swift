@@ -7,18 +7,25 @@
 
 import SwiftUI
 import Resolver
+import UniformTypeIdentifiers
+import FirebaseAuth
 
 struct HomeView: View {
     
-    @EnvironmentObject private var appState: AppState
+    @ObservedObject var authService: AnyFirebaseAuthService<User>
     @StateObject private var vm: HomeViewModel
     
+    // UI
+    @State private var showingAlert = false
+    @State private var selectedBudgetingPlan: Budgeting?
+    
     private var username: String {
-        appState.authService.profile?.username ?? "-"
+        authService.profile?.username ?? "-"
     }
     
-    init() {
-        _vm = StateObject(wrappedValue: HomeViewModel())
+    init(authService: AnyFirebaseAuthService<User>) {
+        self.authService = authService
+        _vm = StateObject(wrappedValue: HomeViewModel(authService: authService))
     }
     
     var body: some View {
@@ -36,9 +43,9 @@ struct HomeView: View {
             .padding()
             .padding(.bottom)
         }
-        .task {
-            guard let uid = appState.authService.user?.uid else { return }
-            vm.loadBudgetings(uid: uid)
+        .alert("Confirm to delete?", isPresented: $showingAlert, presenting: selectedBudgetingPlan) { budgetPlan in
+            Button("Yes", role: .destructive) { vm.deleteBudgetPlan(for: budgetPlan) }
+            Button("Cancel", role: .cancel) { }
         }
         .navigationTitle("finebuck")
         .navigationBarTitleDisplayMode(.inline)
@@ -50,7 +57,7 @@ struct HomeView_Previews: PreviewProvider {
         Resolver.Name.mode = .mock
         
         return NavigationView {
-            HomeView()
+            HomeView(authService: AnyFirebaseAuthService<User>(FirebaseAuthService()))
         }
         .environmentObject(AppState())
         .preferredColorScheme(.dark)
@@ -58,6 +65,12 @@ struct HomeView_Previews: PreviewProvider {
 }
 
 extension HomeView {
+    // MARK: - Actions
+    private func showAlertConfirmation() {
+        showingAlert = true
+    }
+    
+    // MARK: - Views
     private var greeting: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Hi \(username)")
@@ -70,7 +83,7 @@ extension HomeView {
             Spacer()
             
             NavigationLink {
-                BudgetingDetailView(budgeting: nil, authService: AnyFirebaseAuthService(appState.authService))
+                BudgetingDetailView(budgeting: nil, authService: authService)
             } label: {
                 createNewBudgetBtn
             }
@@ -110,19 +123,40 @@ extension HomeView {
         }
     }
     
+    // Desc order
+    private var sortedBudgetingPlans: [Budgeting] {
+        vm.budgetings.sorted().reversed()
+    }
+    
     private var saved: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Saved plans")
-                .font(FBFonts.kanitBold(size: .headline))
-            ForEach(vm.budgetings) { budgeting in
+        LazyVStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Saved plans")
+                    .font(FBFonts.kanitBold(size: .headline))
+                Spacer()
+            }
+            ForEach(sortedBudgetingPlans) { budgeting in
                 NavigationLink {
-                    BudgetingDetailView(budgeting: budgeting, authService: AnyFirebaseAuthService(appState.authService))
+                    BudgetingDetailView(budgeting: budgeting, authService: authService)
                 } label: {
                     BudgetPlanItemView(budgeting: budgeting)
                         .contextMenu {
-                            Button("Delete") { }
+                            Button("Delete") {
+                                selectedBudgetingPlan = budgeting
+                                showAlertConfirmation()
+                            }
+                        }
+                        .onAppear {
+                            if budgeting == vm.budgetings.last {
+                                vm.loadMore()
+                            }
                         }
                 }
+            }
+            
+            if vm.isFetchingMore {
+                ProgressView()
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
         }
     }

@@ -9,11 +9,12 @@ import SwiftUI
 import AuthenticationServices
 import FirebaseAuth
 import GoogleSignInSwift
+//import GoogleSignInSwift
 
 struct SignInView: View {
     
     @StateObject private var vm: SignInViewModel
-    var authService: AnyFirebaseAuthService<User>
+    weak var authService: AnyFirebaseAuthService<User>?
     
     init(authService: AnyFirebaseAuthService<User>) {
         _vm = StateObject(wrappedValue: SignInViewModel(authService: authService))
@@ -109,8 +110,14 @@ extension SignInView {
                 vm.verifyAppleSignIn(result: result)
             }.frame(height: 48)
             
-            GoogleSignInBtnView(style: .wide, authService: authService)
-                .frame(height: 48)
+//            GoogleSignInButton {
+//
+//            }
+            
+            if let authService = authService {
+                GoogleSignInBtnView(style: .wide, authService: authService)
+                    .frame(height: 48)
+            }
         }
     }
 }

@@ -18,12 +18,21 @@ struct BudgetingDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var appState: AppState
     @StateObject var vm: BudgetingDetailViewModel
+    
+    // UI
     @FocusState private var focusedField: Field?
     @State private var draggedCost: Budgeting.Cost?
     @State private var draggedEarning: Budgeting.Earning?
+    @State private var showAlert = false
+    @State private var selectedBudgetItem: BudgetItem?
     
     init(budgeting: Budgeting?, authService: AnyFirebaseAuthService<User>) {
-        _vm = StateObject(wrappedValue: BudgetingDetailViewModel(budgeting: budgeting, authService: authService))
+        _vm = StateObject(
+            wrappedValue: BudgetingDetailViewModel(
+                budgeting: budgeting,
+                authService: authService
+            )
+        )
     }
     
     var body: some View {
@@ -54,13 +63,45 @@ struct BudgetingDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                CloseBarItem(text: "Save", onTap: {
+                Button {
                     vm.saveToCloud()
-                })
+                } label: {
+                    if vm.isLoading {
+                        ProgressView()
+                    } else {
+                        Text("Save")
+                    }
+                }.foregroundColor(Color.theme.primary)
             }
+        }
+        .alert("Delete this item?", isPresented: $showAlert, presenting: selectedBudgetItem) { item in
+            Button("Yes", role: .destructive) {
+                vm.deleteBudgetItem(of: item)
+            }
+            Button("Cancel", role: .cancel) { }
         }
     }
     
+}
+
+struct BudgetingDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        Resolver.Name.mode = .mock
+        
+        return Group {
+            NavigationView {
+                BudgetingDetailView(budgeting: .mockBudgetingItems[0], authService: AnyFirebaseAuthService(FirebaseAuthService()))
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .previewDisplayName("Create budgeting")
+        }
+        .preferredColorScheme(.dark)
+        .environmentObject(AppState())
+    }
+}
+
+extension BudgetingDetailView {
+    // MARK: - Actions
     private func closeSheet(_ savedBudgetItem: BudgetItem) {
         Task {
             vm.saveBudgeting(budgetItem: savedBudgetItem)
@@ -76,25 +117,12 @@ struct BudgetingDetailView: View {
             return "\(budget.type.rawValue) \(budget.rate?.asPercentString() ?? "0%") of \(budget.value)"
         }
     }
-}
-
-struct BudgetingDetailView_Previews: PreviewProvider {
     
-    static var previews: some View {
-        Resolver.Name.mode = .mock
-        
-        return Group {
-            NavigationView {
-                BudgetingDetailView(budgeting: nil, authService: AnyFirebaseAuthService(FirebaseAuthService()))
-            }
-            .previewDisplayName("Create budgeting")
-        }
-        .preferredColorScheme(.dark)
-        .environmentObject(AppState())
+    private func showDeleteConfirmation() {
+        showAlert = true
     }
-}
 
-extension BudgetingDetailView {
+    // MARK: - Views
     private var heading: some View {
         HStack {
             TextField("", text: $vm.title)
@@ -118,20 +146,20 @@ extension BudgetingDetailView {
     }
     
     private var content: some View {
-        ZStack {
-            VStack(alignment: .leading, spacing: 30) {
-                costs
-                earning
-                net
-            }
-            .disabled(vm.isEditingTitle)
-            .opacity(vm.isEditingTitle ? 0.3 : 1.0)
-            .offset(x: 0, y: vm.isEditingTitle ? 10.0: 0.0)
-            .animation(
-                .spring().delay(0.3),
-                value: vm.isEditingTitle
-            )
+        
+        VStack(alignment: .leading, spacing: 30) {
+            costs
+            earning
+            net
         }
+        .disabled(vm.isEditingTitle)
+        .opacity(vm.isEditingTitle ? 0.3 : 1.0)
+        .offset(x: 0, y: vm.isEditingTitle ? 10.0: 0.0)
+        .animation(
+            .spring().delay(0.3),
+            value: vm.isEditingTitle
+        )
+        
         .padding(.top)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -150,7 +178,10 @@ extension BudgetingDetailView {
                                 subtitle: generateBudgetItemSubtitle(cost),
                                 trailing: cost.formattedValue)
                             .contextMenu {
-                                Button("Delete") {}
+                                Button("Delete") {
+                                    selectedBudgetItem = cost
+                                    showDeleteConfirmation()
+                                }
                             }
                             .onDrag {
                                 self.draggedCost = cost
@@ -166,8 +197,8 @@ extension BudgetingDetailView {
                                         let firstCost = vm.costs[first]
                                         let secondCost = vm.costs[second]
                                         
-                                        vm.costs[first].index = secondCost.index
-                                        vm.costs[second].index = firstCost.index
+                                        vm.costs[first].index = secondCost.index ?? 0
+                                        vm.costs[second].index = firstCost.index ?? 0
                                     }
                                 )
                             )
@@ -200,7 +231,10 @@ extension BudgetingDetailView {
                                 subtitle: generateBudgetItemSubtitle(earning),
                                 trailing: earning.formattedValue)
                             .contextMenu {
-                                Button("Delete") {}
+                                Button("Delete") {
+                                    selectedBudgetItem = earning
+                                    showDeleteConfirmation()
+                                }
                             }
                             .onDrag {
                                 self.draggedEarning = earning
@@ -216,8 +250,8 @@ extension BudgetingDetailView {
                                         let firstEarning = vm.earnings[first]
                                         let secondEarning = vm.earnings[second]
                                         
-                                        vm.earnings[first].index = secondEarning.index
-                                        vm.earnings[second].index = firstEarning.index
+                                        vm.earnings[first].index = secondEarning.index ?? 0
+                                        vm.earnings[second].index = firstEarning.index ?? 0
                                     }
                                 )
                             )

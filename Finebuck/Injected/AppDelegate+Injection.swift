@@ -19,7 +19,7 @@ extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
         
         register {
-            resolve(name: .mode) as BudgetsDBRepositoryProtocol
+            resolve(name: .mode) as AnyFirestoreDBRepository<Budgeting>
         }
         
         // for another protocol
@@ -28,17 +28,15 @@ extension Resolver: ResolverRegistering {
 //        }
         
         register(name: .app) {
-            BudgetsDBRepository() as BudgetsDBRepositoryProtocol
+            AnyFirestoreDBRepository(BudgetsDBRepository()) as AnyFirestoreDBRepository<Budgeting>
         }.scope(.application)
         
         register(name: .mock) {
-            MockBudgetsDBRepository() as BudgetsDBRepositoryProtocol
-            
+            AnyFirestoreDBRepository(MockBudgetsDBRepository()) as AnyFirestoreDBRepository<Budgeting>
         }
         
         register(name: .mockFailed) {
-            MockedBudgetsDBRepositoryFailed() as BudgetsDBRepositoryProtocol
-
+            AnyFirestoreDBRepository(MockedBudgetsDBRepositoryFailed()) as AnyFirestoreDBRepository<Budgeting>
         }
     }
 }

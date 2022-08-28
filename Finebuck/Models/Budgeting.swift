@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 enum ItemIdentifier: String, Codable { case cost = "cost", earning = "earning" }
@@ -24,17 +25,24 @@ protocol BudgetItem {
     var index: Int? { get set }
 }
 
-struct Budgeting: Codable, Identifiable, Equatable {
+struct Budgeting: Codable, Identifiable, Equatable, Comparable {
     static func == (lhs: Budgeting, rhs: Budgeting) -> Bool {
         lhs.id == rhs.id && lhs.title == rhs.title
     }
     
+    static func < (lhs: Budgeting, rhs: Budgeting) -> Bool {
+        guard let lI = lhs.createdAt, let rI = rhs.createdAt else { return false }
+        return lI.dateValue() <= rI.dateValue()
+    }
+    
     @DocumentID var id: String?
     var title: String
-    var costs: [Cost]
-    var earning: [Earning]
+//    lazy var costs: [Cost] = []
+//    lazy var earning: [Earning] = []
     var currency: Currency
     var creatorUid: String
+    var index: Int?
+    var createdAt: Timestamp?
     
     struct Cost: Codable, BudgetItem, Identifiable, Equatable, Comparable {
         static func < (lhs: Budgeting.Cost, rhs: Budgeting.Cost) -> Bool {
@@ -131,6 +139,7 @@ extension Budgeting {
             id: "B1",
             title: "Budgeting Plan 1",
             costs: [
+                Cost(itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr),
                 Cost(itemIdentifier: .cost, title: "Cost", type: .fixed, value: 5.0, rate: nil, currency: .myr)
             ],
             earning: [

@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ContentView: View {
-    @ObservedObject var authService: FirebaseAuthService
+    @ObservedObject var authService: AnyFirebaseAuthService<User>
     
     var body: some View {
         if authService.isLoading {
@@ -25,7 +26,7 @@ struct ContentView: View {
                 }
                 
             } else {
-                SignInView(authService: AnyFirebaseAuthService(authService))
+                SignInView(authService: authService)
             }
         }
     }
@@ -33,6 +34,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(authService: FirebaseAuthService())
+        ContentView(authService: AnyFirebaseAuthService( FirebaseAuthService()))
     }
 }

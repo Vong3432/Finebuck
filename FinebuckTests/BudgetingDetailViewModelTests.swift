@@ -51,14 +51,12 @@ class BudgetingDetailViewModelTests: XCTestCase {
         let mocked = Budgeting.mockBudgetingItems[0]
         let mockAuthService = MockFirebaseAuthService()
         let vm = BudgetingDetailViewModel(budgeting: mocked, authService: AnyFirebaseAuthService(mockAuthService))
-//        let expected: BudgetsDBRepositoryError = .failed
         
         // When
         vm.saveBudgeting(budgetItem: nil) // Users create new budgeting without any budgetItem.
         
         // Then
         XCTAssertNotNil(vm.budgeting)
-//        XCTAssertEqual(vm.error, expected)
     }
     
     func test_BudgetingDetailViewModel_saveBudgetingWithNewBudgetItem_shouldSuccess() async {
@@ -154,7 +152,6 @@ class BudgetingDetailViewModelTests: XCTestCase {
             let vm = BudgetingDetailViewModel(budgeting: mocked, authService: AnyFirebaseAuthService(mockAuthService))
             
             if ran {
-                // budgetItem = cost
                 var cost: BudgetItem = mocked.costs[0]
                 let prev = cost.title
                 cost.title = "UPDATED"
@@ -165,7 +162,7 @@ class BudgetingDetailViewModelTests: XCTestCase {
                 // Then
                 let idx = vm.costs.firstIndex(where: { $0.id == cost.id })
                 
-                guard let idx = idx, let budgeting = vm.budgeting else {
+                guard let idx = idx else {
                     return XCTFail()
                 }
                 
@@ -184,7 +181,7 @@ class BudgetingDetailViewModelTests: XCTestCase {
                 // Then
                 let idx = vm.earnings.firstIndex(where: { $0.id == earning.id })
                 
-                guard let idx = idx, let budgeting = vm.budgeting  else {
+                guard let idx = idx else {
                     return XCTFail()
                 }
                 
@@ -219,10 +216,6 @@ class BudgetingDetailViewModelTests: XCTestCase {
                 vm.saveBudgeting(budgetItem: cost) // simulate user saves budget item
                 
                 // Then
-                let idx = vm.costs.firstIndex(where: { $0.id == cost.id })
-                
-//                XCTAssertNotNil(vm.error)
-//                XCTAssertEqual(vm.error, .failed)
                 XCTAssertNotEqual(prev, cost.title)
             } else {
                 // budgetItem earning
@@ -234,12 +227,100 @@ class BudgetingDetailViewModelTests: XCTestCase {
                 vm.saveBudgeting(budgetItem: earning) // simulate user saves budget item
              
                 // Then
-                let idx = vm.earnings.firstIndex(where: { $0.id == earning.id })
-                
-//                XCTAssertNotNil(vm.error)
-//                XCTAssertEqual(vm.error, .failed)
                 XCTAssertNotEqual(prev, earning.title)
             }
         }
+    }
+    
+    func test_BudgetingDetailViewModel_deleteBudgetItem_shouldSuccess() async {
+        Resolver.Name.mode = .mock
+        
+        // Given
+        let mocked = Budgeting.mockBudgetingItems[0]
+        let mockAuthService = MockFirebaseAuthService()
+        try? await mockAuthService.login("anything", "anything")
+        let vm = BudgetingDetailViewModel(budgeting: mocked, authService: AnyFirebaseAuthService(mockAuthService))
+        
+        // make sure got item before testing
+        guard vm.earnings.isEmpty == false else {
+            XCTFail("Make sure mock budget item earnings is not empty!")
+            return
+        }
+        
+        let delete = vm.earnings[0] // pick first item
+        
+        // When
+        let prevCount = vm.earnings.count
+        vm.deleteBudgetItem(of: delete)
+        
+        // Then
+        XCTAssertEqual(prevCount - 1, vm.earnings.count)
+        
+    }
+    
+    func test_BudgetingDetailViewModel_deleteBudgetItem_shouldFail() async {
+        Resolver.Name.mode = .mockFailed
+        
+        // Given
+        let mocked = Budgeting.mockBudgetingItems[0]
+        let mockAuthService = MockFirebaseAuthService()
+        try? await mockAuthService.login("anything", "anything")
+        let vm = BudgetingDetailViewModel(budgeting: mocked, authService: AnyFirebaseAuthService(mockAuthService))
+        
+        // make sure got item before testing
+        guard vm.earnings.isEmpty == false else {
+            XCTFail("Make sure mock budget item earnings is not empty!")
+            return
+        }
+        
+        let delete = Budgeting.Earning(itemIdentifier: .earning, title: "", type: .fixed, value: 0.0, currency: .myr)
+        
+        // When
+        let prevCount = vm.earnings.count
+        vm.deleteBudgetItem(of: delete)
+        
+        // Then
+        XCTAssertEqual(prevCount, vm.earnings.count)
+        
+    }
+    
+    func test_BudgetingDetailViewModel_saveToCloud_shouldSuccess() async {
+        Resolver.Name.mode = .mock
+        
+        // Given
+        let mocked = Budgeting.mockBudgetingItems[0]
+        let mockAuthService = MockFirebaseAuthService()
+        try? await mockAuthService.login("anything", "anything")
+        let vm = BudgetingDetailViewModel(budgeting: mocked, authService: AnyFirebaseAuthService(mockAuthService))
+        
+        // When
+        let updatedTitle = "Updated title!"
+        vm.budgeting?.title = updatedTitle
+        vm.saveToCloud()
+        
+        // Then
+        XCTAssertNil(vm.error)
+        XCTAssertEqual(vm.budgeting?.title, updatedTitle)
+        
+    }
+    
+    func test_BudgetingDetailViewModel_saveToCloud_shouldFail() async {
+        Resolver.Name.mode = .mockFailed
+        
+        // Given
+        let mocked = Budgeting.mockBudgetingItems[0]
+        let mockAuthService = MockFirebaseAuthService()
+        try? await mockAuthService.login("anything", "anything")
+        let vm = BudgetingDetailViewModel(budgeting: mocked, authService: AnyFirebaseAuthService(mockAuthService))
+        
+        // When
+        let updatedTitle = "Updated title!"
+        vm.budgeting?.title = updatedTitle
+        vm.saveToCloud()
+        
+        // Then
+        try? await Task.sleep(nanoseconds: 1_000_000) // wait for 1s otherwise it would run the check logic before execution
+        XCTAssertNotNil(vm.error)
+        
     }
 }

@@ -24,7 +24,7 @@ struct AuthorizedRootView: View {
             
             // Home
             NavigationView {
-                HomeView()
+                HomeView(authService: appState.authService)
             }
             .navigationViewStyle(.stack)
             .tabItem {

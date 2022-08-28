@@ -8,12 +8,13 @@
 import Foundation
 import Resolver
 import FirebaseAuth
+import SwiftUI
 
 extension BudgetingDetailView {
     
     class BudgetingDetailViewModel: ObservableObject {
         
-        var budgeting: Budgeting?
+        @Published var budgeting: Budgeting?
         
         /// Created local instances to make sure UI can capture updates from budgeting even though they are already in inside of `budgeting` variable.
         @Published var costs = [Budgeting.Cost]()
@@ -23,10 +24,10 @@ extension BudgetingDetailView {
         @Published var title: String = ""
         @Published private(set) var isEditingTitle = false
         @Published private(set) var isLoading = false
-        @Published private(set) var error: BudgetsDBRepositoryError? = nil
+        @Published private(set) var error: FirestoreDBRepositoryError? = nil
         
-        @Injected private var dataService: BudgetsDBRepositoryProtocol
-        private var authService: AnyFirebaseAuthService<User>
+        @Injected private var dataService: AnyFirestoreDBRepository<Budgeting>
+        var authService: AnyFirebaseAuthService<User>?
         
         init(budgeting: Budgeting? = nil, authService: AnyFirebaseAuthService<User>) {
             self.budgeting = budgeting
@@ -37,7 +38,7 @@ extension BudgetingDetailView {
         }
         
         deinit {
-            print("DEINIT")
+            print("BudgetDetailVM DEINIT")
         }
         
         private func preset() {
@@ -79,43 +80,30 @@ extension BudgetingDetailView {
         
         // MARK: - Save budget data to firestore
         func saveToCloud() {
-            Task {
+            Task { @MainActor in
+                // Ensure everything is up-to-date
+                saveBudgeting(budgetItem: nil)
+                
+                guard let budgeting = budgeting else { return }
+                let savedBudgeting: Budgeting!
+                
                 do {
-                    // Ensure everything is up-to-date
-                    saveBudgeting(budgetItem: nil)
-                    
-                    guard let budgeting = budgeting, let saved = try await dataService.save(budgeting) else {
-                        throw BudgetsDBRepositoryError.failed
+                    self.isLoading = true
+                    savedBudgeting = try await dataService.save(budgeting)
+                    self.isLoading = false
+                    self.budgeting = savedBudgeting
+                } catch let error {
+                    debugPrint(error)
+                    if let error = error as? FirestoreDBRepositoryError {
+                        self.error = error
                     }
-                    
-                    // Set the updated budgeting locally
-                    DispatchQueue.main.async {
-                        self.budgeting = saved
-                    }
-                }
-                catch BudgetsDBRepositoryError.noResult {
-                    DispatchQueue.main.async {
-                        self.error = .noResult
-                    }
-                }
-                catch BudgetsDBRepositoryError.notAuthenticated {
-                    DispatchQueue.main.async {
-                        self.error = .notAuthenticated
-                    }
-                }
-                catch BudgetsDBRepositoryError.failed {
-                    DispatchQueue.main.async {
-                        self.error = .failed
-                    }
-                } catch {
-                    fatalError("Unexpected error")
                 }
             }
         }
         
         // MARK: - Save budget data to local state
         func saveBudgeting(budgetItem: BudgetItem?) {
-            guard let user = authService.user else { return }
+            guard let user = authService?.user else { return }
             
             let savedBudgeting = Budgeting(
                 id: budgeting?.id,
@@ -131,7 +119,7 @@ extension BudgetingDetailView {
         }
         
         private func saveBudgetItem(of budgeting: Budgeting, budgetItem: BudgetItem?) {
-            guard let budgetItem = budgetItem, let user = authService.user else { return }
+            guard let budgetItem = budgetItem, let user = authService?.user else { return }
             
             var updatedBudgeting = Budgeting(id: budgeting.id, title: budgeting.title, costs: costs, earning: earnings, currency: budgeting.currency, creatorUid: user.uid)
             
@@ -197,7 +185,10 @@ extension BudgetingDetailView {
             }
             updatedBudgeting.costs = costs
             updatedBudgeting.earning = earnings
-            self.budgeting = updatedBudgeting
+            
+            DispatchQueue.main.async {
+                self.budgeting = updatedBudgeting
+            }
         }
         
         // MARK: - Delete budget item from firestore
@@ -206,11 +197,21 @@ extension BudgetingDetailView {
             case .earning:
                 let idx = earnings.firstIndex { $0.id == budgetItem.id }
                 guard let idx = idx else { return }
-                earnings.remove(at: idx)
+                
+                withAnimation(.spring()) {
+                    _ = self.earnings.remove(at: idx)
+                }
+                
+                budgeting?.earning = earnings
             case .cost:
                 let idx = costs.firstIndex { $0.id == budgetItem.id }
                 guard let idx = idx else { return }
-                costs.remove(at: idx)
+                
+                withAnimation(.spring()) {
+                    _ = self.costs.remove(at: idx)
+                }
+                
+                budgeting?.costs = costs
             }
         }
     }

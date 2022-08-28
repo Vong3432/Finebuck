@@ -9,13 +9,25 @@ import Foundation
 import FirebaseAuth
 
 final class MockFirebaseAuthService: FirebaseAuthServiceProtocol {
+    @Published var isLoading: Bool = false
+    var isLoadingPublished: Published<Bool> { _isLoading }
+    var isLoadingPublisher: Published<Bool>.Publisher { $isLoading }
+    
+    @Published var profile: Profile?
+    var profilePublished: Published<Profile?> { _profile }
+    var profilePublisher: Published<Profile?>.Publisher { $profile }
+    
+    func saveProfile(name: String) {
+        
+    }
+    
     @Published var user: User?
-    var userPublisher: Published<User?> { _user }
-    var userPublished: Published<User?>.Publisher {$user}
+    var userPublished: Published<User?> { _user }
+    var userPublisher: Published<User?>.Publisher {$user}
     
     @Published var errorMsg: String?
-    var errorMsgPublisher: Published<String?> { _errorMsg }
-    var errorMsgPublished: Published<String?>.Publisher { $errorMsg }
+    var errorMsgPublished: Published<String?> { _errorMsg }
+    var errorMsgPublisher: Published<String?>.Publisher { $errorMsg }
     
     private var authenticationStateHandler: AuthStateDidChangeListenerHandle?
     
@@ -63,13 +75,25 @@ final class MockFirebaseAuthService: FirebaseAuthServiceProtocol {
 
 
 final class MockFirebaseAuthServiceFailed: FirebaseAuthServiceProtocol {
+    @Published var isLoading: Bool = false
+    var isLoadingPublished: Published<Bool> { _isLoading }
+    var isLoadingPublisher: Published<Bool>.Publisher { $isLoading }
+    
+    @Published var profile: Profile?
+    var profilePublished: Published<Profile?> { _profile }
+    var profilePublisher: Published<Profile?>.Publisher { $profile }
+    
+    func saveProfile(name: String) {
+        
+    }
+    
     @Published var user: User?
-    var userPublisher: Published<User?> { _user }
-    var userPublished: Published<User?>.Publisher {$user}
+    var userPublished: Published<User?> { _user }
+    var userPublisher: Published<User?>.Publisher {$user}
     
     @Published var errorMsg: String?
-    var errorMsgPublisher: Published<String?> { _errorMsg }
-    var errorMsgPublished: Published<String?>.Publisher { $errorMsg }
+    var errorMsgPublished: Published<String?> { _errorMsg }
+    var errorMsgPublisher: Published<String?>.Publisher { $errorMsg }
     
     func login(_ email: String, _ password: String) async throws {
         throw AuthError.incorrect

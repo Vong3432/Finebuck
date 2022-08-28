@@ -7,8 +7,17 @@
 
 import Foundation
 import Combine
+import FirebaseFirestore
 
-final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
+final class MockedBudgetsDBRepositoryFailed: FirestoreDBRepositoryProtocol {
+    var store: Firestore = Firestore.firestore()
+    var path: String = ""
+    var listener: ListenerRegistration?
+    
+    func updateMultiple(_ items: [Budgeting], newDataArr: [[String : Any]]) async throws {
+        throw FirestoreDBRepositoryError.failed
+    }
+    
     func reset() {
         
     }
@@ -17,46 +26,57 @@ final class MockedBudgetsDBRepositoryFailed: BudgetsDBRepositoryProtocol {
         
     }
     
-    @Published var budgetings: [Budgeting] = []
-    var budgetingsPublished: Published<[Budgeting]> { _budgetings }
-    var budgetingsPublisher: Published<[Budgeting]>.Publisher { $budgetings }
+    @Published var items: [Budgeting] = []
+    var itemsPublished: Published<[Budgeting]> { _items }
+    var itemsPublisher: Published<[Budgeting]>.Publisher { $items }
     
     func save(_ budgeting: Budgeting) async throws -> Budgeting? {
-        throw BudgetsDBRepositoryError.failed
+        throw FirestoreDBRepositoryError.failed
     }
     
-    func update(_ targetBudgeting: Budgeting, with: [String: Any]) async throws -> Budgeting {
-        throw BudgetsDBRepositoryError.failed
+    func update(_ targetBudgeting: Budgeting, with: [String: Any]) async throws -> Void {
+        throw FirestoreDBRepositoryError.failed
     }
     
-    func delete(targetBudgeting: Budgeting) async throws {
-        throw BudgetsDBRepositoryError.failed
+    func delete(item targetBudgeting: Budgeting) async throws {
+        throw FirestoreDBRepositoryError.failed
     }
     
     func get(_ budgeting: Budgeting) async throws -> Budgeting? {
-        throw BudgetsDBRepositoryError.noResult
+        throw FirestoreDBRepositoryError.noResult
     }
     
     func getAll(fromUserId: String) async throws {
-        throw BudgetsDBRepositoryError.noResult
+        throw FirestoreDBRepositoryError.noResult
     }
     
+    func loadMore(fromUserId: String) async throws {
+        
+    }
 }
 
-final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
-    @Published var budgetings: [Budgeting] = []
-    var budgetingsPublished: Published<[Budgeting]> { _budgetings }
-    var budgetingsPublisher: Published<[Budgeting]>.Publisher { $budgetings }
+final class MockBudgetsDBRepository: FirestoreDBRepositoryProtocol {
+    var store: Firestore = Firestore.firestore()
+    var path: String = ""
+    var listener: ListenerRegistration?
+    
+    @Published var items: [Budgeting] = []
+    var itemsPublished: Published<[Budgeting]> { _items }
+    var itemsPublisher: Published<[Budgeting]>.Publisher { $items }
     
     func save(_ budgeting: Budgeting) async throws -> Budgeting? {
         return budgeting
     }
     
-    func update(_ targetBudgeting: Budgeting, with: [String: Any]) async throws -> Budgeting {
-        return targetBudgeting
+    func update(_ targetBudgeting: Budgeting, with: [String: Any]) async throws -> Void {
+        
     }
     
-    func delete(targetBudgeting: Budgeting) async throws {
+    func updateMultiple(_ items: [Budgeting], newDataArr: [[String : Any]]) async throws {
+        
+    }
+    
+    func delete(item targetBudgeting: Budgeting) async throws {
         return
     }
     
@@ -65,7 +85,7 @@ final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
     }
     
     func getAll(fromUserId: String) async throws -> Void {
-        self.budgetings = Budgeting.mockBudgetingItems
+        self.items = Budgeting.mockBudgetingItems
     }
     
     func reset() {
@@ -73,6 +93,10 @@ final class MockBudgetsDBRepository: BudgetsDBRepositoryProtocol {
     }
     
     func removeListeners() {
+        
+    }
+    
+    func loadMore(fromUserId: String) async throws {
         
     }
     
